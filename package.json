@@ -11,11 +11,11 @@
     "@types/node": "^16.11.22",
     "@types/react": "^17.0.39",
     "@types/react-dom": "^17.0.11",
-    "@typescript-eslint/eslint-plugin": "^4.22.0",
-    "@typescript-eslint/parser": "^4.22.0",
     "@types/react-router-dom": "^5.3.3",
     "@types/store": "^2.0.2",
-    "eslint-plugin-react-hooks": "^4.3.0",
+    "@typescript-eslint/eslint-plugin": "^4.22.0",
+    "@typescript-eslint/parser": "^4.22.0",
+    "antd": "^4.18.7",
     "axios": "^0.25.0",
     "babel-eslint": "^10.1.0",
     "classnames": "^2.3.1",
@@ -30,6 +30,7 @@
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-react": "^7.21.5",
+    "eslint-plugin-react-hooks": "^4.3.0",
     "eslint-plugin-testing-library": "^3.9.2",
     "eslint-webpack-plugin": "^2.5.2",
     "history": "^4.9.0",
@@ -42,6 +43,7 @@
     "react-hot-loader": "^4.13.0",
     "react-router-dom": "^5.1.0",
     "react-scripts": "5.0.0",
+    "serve": "^13.0.2",
     "store": "^2.0.12",
     "typescript": "^4.5.5",
     "web-vitals": "^2.1.4"
@@ -50,7 +52,8 @@
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "json-server": "json-server src/mock/mockConfig.js -r ./src/mock/route.json"
   },
   "eslintConfig": {
     "extends": [
@@ -69,5 +72,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "json-server": "^0.17.0"
   }
 }

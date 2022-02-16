@@ -1,0 +1,26 @@
+{
+  "status": 200,
+  "error": false,
+  "errorMessage": "",
+  "errorCode": "0",
+  "data": {
+    "authorityType": "0",
+    "authorityInfo": [
+      {
+        "authorityId": "01",
+        "authorityItems": "財務分析",
+        "authorityExistence": "1"
+      },
+      {
+        "authorityId": "02",
+        "authorityItems": "ビジネスマッチング",
+        "authorityExistence": "1"
+      },
+      {
+        "authorityId": "03",
+        "authorityItems": "スポット人材紹介",
+        "authorityExistence": "1"
+      }
+    ]
+  }
+}
