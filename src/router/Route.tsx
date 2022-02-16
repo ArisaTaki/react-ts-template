@@ -1,5 +1,7 @@
 import React from 'react';
-import { Redirect, RouteProps, Route as ReactRouter } from 'react-router-dom';
+import {
+  Redirect, RouteProps, Route as ReactRouter,
+} from 'react-router-dom';
 import { getUser } from '@/utils/storageUtils';
 import routerPath from '@/router/router-path';
 import Login from '@/pages/Login';

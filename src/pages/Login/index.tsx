@@ -5,9 +5,6 @@ import routerPath from '@/router/router-path';
 
 const Login: React.FC = () => {
   const history = useHistory();
-  useEffect(() => {
-    console.log(history);
-  });
   return (
     <div>
       <button

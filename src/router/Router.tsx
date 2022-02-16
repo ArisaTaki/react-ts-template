@@ -14,7 +14,7 @@ const Router: React.FC = () => {
   const history = createBrowserHistory();
   return (
     <BaseRouter history={history}>
-      <Switch>
+      <Switch location={history.location}>
         <Route path={routerPath.Home} exact component={Home} />
         <Route path={routerPath.Login} component={Login} />
         <Route path={routerPath.User} component={User} />
