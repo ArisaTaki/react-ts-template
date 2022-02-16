@@ -11,7 +11,7 @@ export interface ExampleProps {
 const Example: React.FC<ExampleProps> = (props: ExampleProps) => {
   const { example } = props;
   return (
-    <div>{example}</div>
+    <div className={cx('example-style')}>{example}</div>
   );
 };
 
