@@ -46,26 +46,28 @@ const Login: React.FC = () => {
       </Form.Item>
 
       <Form.Item>
-        <Button
-          type="primary"
-          htmlType="submit"
-          className="login-form-button"
-          onClick={() => {
-            saveUser('123');
-            history.push(routerPath.Home);
-          }}
-        >
-          Log in
-        </Button>
-        Or
-        {' '}
-        <Button onClick={() => { history.push(routerPath.Register); }}>register now!</Button>
+        <div className={cx('buttons')}>
+          <Button
+            type="primary"
+            htmlType="submit"
+            className={cx('login')}
+            onClick={() => {
+              saveUser('123');
+              history.push(routerPath.Home);
+            }}
+          >
+            Log in
+          </Button>
+          <Button className={cx('register')} onClick={() => { history.push(routerPath.Register); }}>register now!</Button>
+        </div>
       </Form.Item>
     </Form>
   );
   return (
-    <div className={cx('main')}>
-      { renderLoginForm() }
+    <div className={cx('content')}>
+      <div className={cx('main')}>
+        { renderLoginForm() }
+      </div>
     </div>
   );
 };

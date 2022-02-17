@@ -1,17 +1,27 @@
-import React, { useEffect } from 'react';
-import classNames from 'classnames/bind';
-import styles from './style.module.scss';
-
-const cx = classNames.bind(styles);
+import React from 'react';
+import { Result, Button } from 'antd';
+import { useHistory } from 'react-router-dom';
+import routerPath from '@/router/router-path';
 
 const NotFind: React.FC = () => {
-  useEffect(() => {
-    console.log('1');
-  });
+  const history = useHistory();
   return (
-    <div>
-      <p>404</p>
-    </div>
+
+    <Result
+      status="404"
+      title="404"
+      subTitle="Sorry, the page you visited does not exist."
+      extra={(
+        <Button
+          type="primary"
+          onClick={() => {
+            history.replace(routerPath.Home);
+          }}
+        >
+          Back Home
+        </Button>
+)}
+    />
   );
 };
 

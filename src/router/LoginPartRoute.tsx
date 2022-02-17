@@ -5,30 +5,25 @@ import {
 import { getUser } from '@/utils/storageUtils';
 import routerPath from '@/router/router-path';
 import Home from '@/pages/Home';
-import Login from '@/pages/Login';
-import Register from '@/pages/Register';
 
-export const Route: React.FC<RouteProps> = (props) => {
+export const LoginPartRoute: React.FC<RouteProps> = (props) => {
   const { component: Component, ...rest } = props;
   if (!Component) return null;
 
   return (
     <ReactRouter
       {...rest}
-      render={(state) => {
+      render={() => {
         if (getUser()) {
-          return (rest.path === routerPath.Login || rest.path === routerPath.Register) ? (
+          return (
             <>
               <Redirect to={routerPath.Home} />
               <Home />
             </>
-          ) : <Component {...state} />;
+          );
         }
         return (
-          <ReactRouter>
-            <Redirect to={routerPath.Login} />
-            <Login />
-          </ReactRouter>
+          <ReactRouter {...props} />
         );
       }}
     />
