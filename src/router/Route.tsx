@@ -4,26 +4,40 @@ import {
 } from 'react-router-dom';
 import { getUser } from '@/utils/storageUtils';
 import routerPath from '@/router/router-path';
-import Login from '@/pages/Login';
 import Home from '@/pages/Home';
+import Login from '@/pages/Login';
+import Register from '@/pages/Register';
 
 export const Route: React.FC<RouteProps> = (props) => {
-  const { path } = props;
-  if (!getUser()) {
-    return (
-      <ReactRouter>
+  const { component: Component, ...rest } = props;
+  if (!Component) return null;
+
+  const registerAllow = () => (
+    rest.path !== routerPath.Register ? (
+      <>
         <Redirect to={routerPath.Login} />
         <Login />
-      </ReactRouter>
-    );
-  }
-  if (path === routerPath.Login) {
-    return (
-      <ReactRouter>
-        <Redirect to={routerPath.Home} />
-        <Home />
-      </ReactRouter>
-    );
-  }
-  return <ReactRouter {...props} />;
+      </>
+    ) : <Register />
+  );
+  return (
+    <ReactRouter
+      {...rest}
+      render={(state) => {
+        if (getUser()) {
+          return (rest.path === routerPath.Login || rest.path === routerPath.Register) ? (
+            <>
+              <Redirect to={routerPath.Home} />
+              <Home />
+            </>
+          ) : <Component {...state} />;
+        }
+        return (
+          <ReactRouter>
+            {registerAllow}
+          </ReactRouter>
+        );
+      }}
+    />
+  );
 };
