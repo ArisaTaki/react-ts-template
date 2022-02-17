@@ -1,0 +1,8 @@
+{
+  "message": "ok",
+  "code": 200,
+  "data": {
+    "access_token": "token",
+    "access_id": "token_id"
+  }
+}

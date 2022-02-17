@@ -7,12 +7,21 @@ import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import className from 'classnames/bind';
 import styles from './style.module.scss';
 import routerPath from '@/router/router-path';
+import { ServicesApi } from '@/services/services-api';
 import { saveUser } from '@/utils/storageUtils';
 
 const cx = className.bind(styles);
 
 const Login: React.FC = () => {
   const history = useHistory();
+
+  const { login } = ServicesApi;
+
+  const handleToHomePage = () => {
+    login({ userName: '123', passWord: '123' }).then((res) => {
+      console.log(res);
+    }).catch(() => {});
+  };
   const renderLoginForm = () => (
     <Form
       name="normal_login"
@@ -49,12 +58,8 @@ const Login: React.FC = () => {
         <div className={cx('buttons')}>
           <Button
             type="primary"
-            htmlType="submit"
             className={cx('login')}
-            onClick={() => {
-              saveUser('123');
-              history.push(routerPath.Home);
-            }}
+            onClick={handleToHomePage}
           >
             Log in
           </Button>

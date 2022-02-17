@@ -42,6 +42,7 @@ module.exports = {
     'no-param-reassign': 'warn',
     'no-plusplus': 'warn',
     'jsx-a11y/label-has-associated-control':'warn',
-    'import/extensions': 'off'
-  },
+    'import/extensions': 'off',
+    '@typescript-eslint/no-explicit-any': 'off'
+  }
 };

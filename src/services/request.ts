@@ -18,6 +18,7 @@ instance.interceptors.request.use(
 
 instance.interceptors.response.use(
   (res) => {
+    console.log(res);
     if (res.status >= 200 && res.status < 300) {
       return Promise.resolve(res);
     }
