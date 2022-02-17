@@ -12,14 +12,6 @@ export const Route: React.FC<RouteProps> = (props) => {
   const { component: Component, ...rest } = props;
   if (!Component) return null;
 
-  const registerAllow = () => (
-    rest.path !== routerPath.Register ? (
-      <>
-        <Redirect to={routerPath.Login} />
-        <Login />
-      </>
-    ) : <Register />
-  );
   return (
     <ReactRouter
       {...rest}
@@ -34,7 +26,8 @@ export const Route: React.FC<RouteProps> = (props) => {
         }
         return (
           <ReactRouter>
-            {registerAllow}
+            <Redirect to={routerPath.Login} />
+            <Login />
           </ReactRouter>
         );
       }}
