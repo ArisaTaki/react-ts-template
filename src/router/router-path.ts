@@ -5,6 +5,8 @@ const routerPath = {
   Register: '/register',
   Question: '/question',
   NotFind: '/404',
+  Equipment: '/equipment',
+  EquipmentAdd: '/equipment/add',
 };
 
 export default routerPath;

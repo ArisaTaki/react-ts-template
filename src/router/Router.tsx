@@ -10,6 +10,8 @@ import NotFind from '@/pages/NotFind';
 import { LoginPartRoute } from '@/router/LoginPartRoute';
 import Question from '@/pages/Question';
 import BasicLayout from '@/Layouts/basic-layout';
+import Equipment from '@/pages/Equipment';
+import EquipmentAdd from '@/pages/EquipmentAdd';
 
 const Router: React.FC = () => {
   const history = createBrowserHistory();
@@ -21,6 +23,8 @@ const Router: React.FC = () => {
           <NeedLoginRoute path={routerPath.Home} exact component={Home} />
           <NeedLoginRoute path={routerPath.User} exact component={User} />
           <NeedLoginRoute path={routerPath.Question} exact component={Question} />
+          <NeedLoginRoute path={routerPath.Equipment} exact component={Equipment} />
+          <NeedLoginRoute path={routerPath.EquipmentAdd} exact component={EquipmentAdd} />
         </BasicLayout>
         <Route component={NotFind} />
       </Switch>

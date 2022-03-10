@@ -64,11 +64,11 @@ const BasicLayout: React.FC<BasicLayoutProps> = ({ children }) => {
             <Link to={routerPath.Home}>首页</Link>
           </Menu.Item>
           <SubMenu key="sub1" icon={<BarsOutlined />} title="设备管理">
-            <Menu.Item key="1" icon={<VideoCameraOutlined />}>
-              设备列表
+            <Menu.Item key={routerPath.Equipment} icon={<VideoCameraOutlined />}>
+              <Link to={routerPath.Equipment}>设备列表</Link>
             </Menu.Item>
             <Menu.Item key="2" icon={<VideoCameraAddOutlined />}>
-              设备新增
+              <Link to={routerPath.EquipmentAdd}>设备新增</Link>
             </Menu.Item>
           </SubMenu>
           <Menu.Item key={routerPath.Question} icon={<QuestionCircleOutlined />}>
@@ -90,8 +90,8 @@ const BasicLayout: React.FC<BasicLayoutProps> = ({ children }) => {
               />
             </Dropdown>
             <div className={cx('user-info')}>
-              <div className={cx('name')}>{userInfo?.name}</div>
               <div className={cx('company')}>{userInfo?.companyName}</div>
+              <div className={cx('name')}>{userInfo?.name}</div>
             </div>
           </div>
         </Header>
