@@ -31,8 +31,33 @@
     align-items: center;
 
     .avatar {
-      cursor: pointer;
-      margin-right: 40px;
+      margin-right: 16px;
+      display: flex;
+      height: 100%;
+      align-items: center;
+
+      .avatar-img {
+        margin-right: 10px;
+        cursor: pointer;
+      }
+
+      .user-info {
+        display: flex;
+        height: 100%;
+        flex-direction: column;
+
+        .name {
+          display: flex;
+          align-items: center;
+          height: 50%;
+        }
+
+        .company {
+          display: flex;
+          align-items: center;
+          height: 50%;
+        }
+      }
     }
   }
 }

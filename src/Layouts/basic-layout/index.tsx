@@ -4,8 +4,6 @@ import {
   Avatar, Dropdown, Layout, Menu,
 } from 'antd';
 import {
-  MenuUnfoldOutlined,
-  MenuFoldOutlined,
   VideoCameraOutlined,
   AntDesignOutlined,
   HomeOutlined,
@@ -13,8 +11,11 @@ import {
 } from '@ant-design/icons';
 import { useHistory, Link } from 'react-router-dom';
 import styles from './styles.module.scss';
-import { deleteUser, getUser } from '@/utils/storageUtils';
+import {
+  deleteUser, deleteUserInfo, getUserInfoStore,
+} from '@/utils/storageUtils';
 import routerPath from '@/router/router-path';
+import { ApiData } from '@/services/entities';
 
 const cx = className.bind(styles);
 
@@ -27,17 +28,18 @@ export interface BasicLayoutProps {
 }
 
 const BasicLayout: React.FC<BasicLayoutProps> = ({ children }) => {
-  const [collapsed, setCollapsed] = useState<boolean>(false);
   const history = useHistory();
+  const [userInfo, setUserInfo] = useState<ApiData.UserInfo.ResponseData>();
 
   useEffect(() => {
-    console.log('获取用户信息');
-  });
+    setUserInfo(getUserInfoStore());
+  }, []);
 
   const showUserMenu = () => (
     <Menu>
       <Menu.Item key={1}>
         <div onClick={() => {
+          deleteUserInfo();
           deleteUser();
           history.replace(routerPath.Login);
         }}
@@ -71,13 +73,18 @@ const BasicLayout: React.FC<BasicLayoutProps> = ({ children }) => {
       </Sider>
       <Layout className={cx('site-layout')}>
         <Header className={cx('site-layout-background', 'header')} style={{ padding: 0 }}>
-          <Dropdown overlay={showUserMenu} placement="bottomCenter" arrow>
-            <Avatar
-              className={cx('avatar')}
-              icon={<AntDesignOutlined />}
-            />
-          </Dropdown>
-          {}
+          <div className={cx('avatar')}>
+            <Dropdown overlay={showUserMenu} placement="bottomCenter" arrow>
+              <Avatar
+                className={cx('avatar-img')}
+                icon={<AntDesignOutlined />}
+              />
+            </Dropdown>
+            <div className={cx('user-info')}>
+              <div className={cx('name')}>{userInfo?.name}</div>
+              <div className={cx('company')}>{userInfo?.companyName}</div>
+            </div>
+          </div>
         </Header>
         <Content
           className={cx('site-layout-background')}

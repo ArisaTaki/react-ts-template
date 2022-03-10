@@ -9,14 +9,14 @@ import classNames from 'classnames/bind';
 import styles from './style.module.scss';
 import routerPath from '@/router/router-path';
 import { ServicesApi } from '@/services/services-api';
-import { saveUser } from '@/utils/storageUtils';
+import { saveUser, saveUserInfo } from '@/utils/storageUtils';
 
 const cx = classNames.bind(styles);
 
 const Login: React.FC = () => {
   const history = useHistory();
 
-  const { login } = ServicesApi;
+  const { login, getUserInfo } = ServicesApi;
   const [form] = Form.useForm();
   const formRef = createRef<FormInstance>();
 
@@ -25,10 +25,13 @@ const Login: React.FC = () => {
       const { userName, passWord } = form.getFieldsValue();
       const checkResult = await formRef.current?.validateFields();
       login({ userName, passWord }).then((res) => {
-        message.success(`欢迎你，${checkResult.userName}`);
         const { access_id: accessId, access_token: accessToken } = res.data;
         saveUser(accessId, accessToken);
-        history.push(routerPath.Home);
+        getUserInfo().then((user) => {
+          saveUserInfo(user.data);
+          message.success(`欢迎你，${user.data.name}`);
+          history.push(routerPath.Home);
+        }).catch(() => {});
       }).catch((err) => {
         // TODO login error events
         message.error('something going wrong');

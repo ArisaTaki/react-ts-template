@@ -39,11 +39,13 @@ export namespace ApiData {
 
   // 用户基本信息
   namespace UserInfo {
-    interface ResponseData extends BaseResponse {
+    interface ResponseData extends BaseResponse<ResponseData> {
       // 头像
       avatar: string
       // 昵称
       name: string
+      // 公司名
+      companyName: string
     }
   }
 
