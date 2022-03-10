@@ -7,7 +7,11 @@ import {
   VideoCameraOutlined,
   AntDesignOutlined,
   HomeOutlined,
-  VideoCameraAddOutlined, BarsOutlined, QuestionCircleOutlined,
+  VideoCameraAddOutlined,
+  BarsOutlined,
+  QuestionCircleOutlined,
+  MenuUnfoldOutlined,
+  MenuFoldOutlined,
 } from '@ant-design/icons';
 import { useHistory, Link } from 'react-router-dom';
 import styles from './styles.module.scss';
@@ -30,6 +34,7 @@ export interface BasicLayoutProps {
 const BasicLayout: React.FC<BasicLayoutProps> = ({ children }) => {
   const history = useHistory();
   const [userInfo, setUserInfo] = useState<ApiData.UserInfo.ResponseData>();
+  const [collapsed, setCollapsed] = useState<boolean>(false);
 
   useEffect(() => {
     setUserInfo(getUserInfoStore());
@@ -52,7 +57,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = ({ children }) => {
 
   return (
     <Layout className={cx('main')}>
-      <Sider>
+      <Sider trigger={null} collapsible collapsed={collapsed}>
         <div className={cx('logo')} />
         <Menu theme="dark" mode="inline" defaultSelectedKeys={[history.location.pathname]}>
           <Menu.Item key={routerPath.Home} icon={<HomeOutlined />}>
@@ -73,6 +78,10 @@ const BasicLayout: React.FC<BasicLayoutProps> = ({ children }) => {
       </Sider>
       <Layout className={cx('site-layout')}>
         <Header className={cx('site-layout-background', 'header')} style={{ padding: 0 }}>
+          {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
+            className: cx('trigger'),
+            onClick: () => { setCollapsed(!collapsed); },
+          })}
           <div className={cx('avatar')}>
             <Dropdown overlay={showUserMenu} placement="bottomCenter" arrow>
               <Avatar
