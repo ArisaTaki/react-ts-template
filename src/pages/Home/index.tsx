@@ -6,7 +6,7 @@ import BasicLayout from '@/Layouts/basic-layout';
 const cx = className.bind(styles);
 
 const Home: React.FC = () => {
-  console.log(1);
+  console.log();
   return (
     <BasicLayout>
       <div>test</div>

@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { createRef, useEffect } from 'react';
 import {
   Button, Checkbox, Form, Input,
+  FormInstance, message,
 } from 'antd';
 import { useHistory } from 'react-router-dom';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
@@ -17,20 +18,29 @@ const Login: React.FC = () => {
 
   const { login } = ServicesApi;
   const [form] = Form.useForm();
+  const formRef = createRef<FormInstance>();
 
-  const handleToHomePage = () => {
-    const { userName, passWord } = form.getFieldsValue();
-    login({ userName, passWord }).then((res) => {
-      const { access_id: accessId, access_token: accessToken } = res.data;
-      saveUser(accessId, accessToken);
-      history.push(routerPath.Home);
-    }).catch((err) => {
-      // TODO login error events
-      console.log(err);
-    });
+  const handleToHomePage = async () => {
+    try {
+      const { userName, passWord } = form.getFieldsValue();
+      const checkResult = await formRef.current?.validateFields();
+      login({ userName, passWord }).then((res) => {
+        message.success(`欢迎你，${checkResult.userName}`);
+        const { access_id: accessId, access_token: accessToken } = res.data;
+        saveUser(accessId, accessToken);
+        history.push(routerPath.Home);
+      }).catch((err) => {
+        // TODO login error events
+        message.error('something going wrong');
+        console.log(err);
+      });
+    } catch (err) {
+      message.warning('账号和密码不能为空');
+    }
   };
   const renderLoginForm = () => (
     <Form
+      ref={formRef}
       form={form}
       name="normal_login"
       className="login-form"
@@ -38,13 +48,13 @@ const Login: React.FC = () => {
     >
       <Form.Item
         name="userName"
-        rules={[{ required: true, message: 'Please input your Username!' }]}
+        rules={[{ required: true, message: '请输入用户名' }]}
       >
         <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username" />
       </Form.Item>
       <Form.Item
         name="passWord"
-        rules={[{ required: true, message: 'Please input your Password!' }]}
+        rules={[{ required: true, message: '请输入密码' }]}
       >
         <Input
           prefix={<LockOutlined className="site-form-item-icon" />}
@@ -53,25 +63,14 @@ const Login: React.FC = () => {
         />
       </Form.Item>
       <Form.Item>
-        <Form.Item name="remember" valuePropName="checked" noStyle>
-          <Checkbox>Remember me</Checkbox>
-        </Form.Item>
-
-        <a className="login-form-forgot" href="/#">
-          Forgot password
-        </a>
-      </Form.Item>
-
-      <Form.Item>
         <div className={cx('buttons')}>
           <Button
             type="primary"
             className={cx('login')}
             onClick={handleToHomePage}
           >
-            Log in
+            登录
           </Button>
-          <Button className={cx('register')} onClick={() => { history.push(routerPath.Register); }}>register now!</Button>
         </div>
       </Form.Item>
     </Form>

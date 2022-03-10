@@ -24,5 +24,16 @@
   .site-layout-background {
     background: #fff;
   }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .avatar {
+      cursor: pointer;
+      margin-right: 40px;
+    }
+  }
 }
 
