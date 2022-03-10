@@ -1,8 +1,8 @@
 import React from 'react';
-import className from 'classnames/bind';
+import classNames from 'classnames/bind';
 import styles from './style.module.scss';
 
-const cx = className.bind(styles);
+const cx = classNames.bind(styles);
 
 const User: React.FC = () => (
   <div>

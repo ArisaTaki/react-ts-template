@@ -8,6 +8,7 @@ import Login from '@/pages/Login';
 import { NeedLoginRoute } from './NeedLoginRoute';
 import NotFind from '@/pages/NotFind';
 import { LoginPartRoute } from '@/router/LoginPartRoute';
+import Question from '@/pages/Question';
 
 const Router: React.FC = () => {
   const history = createBrowserHistory();
@@ -17,6 +18,7 @@ const Router: React.FC = () => {
         <LoginPartRoute path={routerPath.Login} exact component={Login} />
         <NeedLoginRoute path={routerPath.Home} exact component={Home} />
         <NeedLoginRoute path={routerPath.User} exact component={User} />
+        <NeedLoginRoute path={routerPath.Question} exact component={Question} />
         <Route component={NotFind} />
       </Switch>
     </BaseRouter>

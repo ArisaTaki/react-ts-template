@@ -1,8 +1,8 @@
 import React from 'react';
-import className from 'classnames/bind';
+import classNames from 'classnames/bind';
 import style from './style.module.scss';
 
-const cx = className.bind(style);
+const cx = classNames.bind(style);
 
 export interface ExampleProps {
   example: string

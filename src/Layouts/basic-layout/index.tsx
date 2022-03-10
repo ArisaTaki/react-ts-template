@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import className from 'classnames/bind';
 import {
   Avatar, Dropdown, Layout, Menu,
@@ -6,28 +6,35 @@ import {
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
-  UserOutlined,
   VideoCameraOutlined,
-  UploadOutlined, AntDesignOutlined,
+  AntDesignOutlined,
+  HomeOutlined,
+  VideoCameraAddOutlined, BarsOutlined, QuestionCircleOutlined,
 } from '@ant-design/icons';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import styles from './styles.module.scss';
-import { deleteUser } from '@/utils/storageUtils';
+import { deleteUser, getUser } from '@/utils/storageUtils';
 import routerPath from '@/router/router-path';
 
 const cx = className.bind(styles);
 
 const { Header, Sider, Content } = Layout;
 
+const { SubMenu } = Menu;
+
 export interface BasicLayoutProps {
   example?: string
 }
 
 const BasicLayout: React.FC<BasicLayoutProps> = ({ children }) => {
-  const [collapsed, setCollapsed] = useState<boolean>(true);
+  const [collapsed, setCollapsed] = useState<boolean>(false);
   const history = useHistory();
 
-  const menu = () => (
+  useEffect(() => {
+    console.log('获取用户信息');
+  });
+
+  const showUserMenu = () => (
     <Menu>
       <Menu.Item key={1}>
         <div onClick={() => {
@@ -43,35 +50,34 @@ const BasicLayout: React.FC<BasicLayoutProps> = ({ children }) => {
 
   return (
     <Layout className={cx('main')}>
-      <Sider trigger={null} collapsible collapsed={collapsed}>
+      <Sider>
         <div className={cx('logo')} />
-        <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
-          <Menu.Item key="1" icon={<UserOutlined />}>
-            nav 1
+        <Menu theme="dark" mode="inline" defaultSelectedKeys={[history.location.pathname]}>
+          <Menu.Item key={routerPath.Home} icon={<HomeOutlined />}>
+            <Link to={routerPath.Home}>首页</Link>
           </Menu.Item>
-          <Menu.Item key="2" icon={<VideoCameraOutlined />}>
-            nav 2
-          </Menu.Item>
-          <Menu.Item key="3" icon={<UploadOutlined />}>
-            nav 3
+          <SubMenu key="sub1" icon={<BarsOutlined />} title="设备管理">
+            <Menu.Item key="1" icon={<VideoCameraOutlined />}>
+              设备列表
+            </Menu.Item>
+            <Menu.Item key="2" icon={<VideoCameraAddOutlined />}>
+              设备新增
+            </Menu.Item>
+          </SubMenu>
+          <Menu.Item key={routerPath.Question} icon={<QuestionCircleOutlined />}>
+            <Link to={routerPath.Question}>疑问解答</Link>
           </Menu.Item>
         </Menu>
       </Sider>
       <Layout className={cx('site-layout')}>
         <Header className={cx('site-layout-background', 'header')} style={{ padding: 0 }}>
-          {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
-            className: cx('trigger'),
-            onClick: () => { setCollapsed(!collapsed); },
-          })}
-          <Dropdown overlay={menu} placement="bottomCenter" arrow>
+          <Dropdown overlay={showUserMenu} placement="bottomCenter" arrow>
             <Avatar
               className={cx('avatar')}
-              size={{
-                xs: 24, sm: 32, md: 40, lg: 64, xl: 80, xxl: 100,
-              }}
               icon={<AntDesignOutlined />}
             />
           </Dropdown>
+          {}
         </Header>
         <Content
           className={cx('site-layout-background')}

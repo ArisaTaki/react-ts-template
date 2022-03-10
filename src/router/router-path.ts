@@ -3,6 +3,7 @@ const routerPath = {
   User: '/user',
   Login: '/login',
   Register: '/register',
+  Question: '/question',
   NotFind: '/404',
 };
 

@@ -1,17 +1,17 @@
-import React, { createRef, useEffect } from 'react';
+import React, { createRef } from 'react';
 import {
-  Button, Checkbox, Form, Input,
+  Button, Form, Input,
   FormInstance, message,
 } from 'antd';
 import { useHistory } from 'react-router-dom';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
-import className from 'classnames/bind';
+import classNames from 'classnames/bind';
 import styles from './style.module.scss';
 import routerPath from '@/router/router-path';
 import { ServicesApi } from '@/services/services-api';
 import { saveUser } from '@/utils/storageUtils';
 
-const cx = className.bind(styles);
+const cx = classNames.bind(styles);
 
 const Login: React.FC = () => {
   const history = useHistory();
