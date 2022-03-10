@@ -14,7 +14,11 @@ const cx = className.bind(styles);
 
 const { Header, Sider, Content } = Layout;
 
-const BasicLayout: React.FC = () => {
+export interface BasicLayoutProps {
+  example?: string
+}
+
+const BasicLayout: React.FC<BasicLayoutProps> = ({ children }) => {
   const [collapsed, setCollapsed] = useState<boolean>(true);
 
   return (
@@ -48,7 +52,7 @@ const BasicLayout: React.FC = () => {
             minHeight: 280,
           }}
         >
-          Content
+          {children}
         </Content>
       </Layout>
     </Layout>
