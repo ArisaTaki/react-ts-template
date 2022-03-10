@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { mockApiPath, onlineApiPath } from '@/constant/constants';
+import { getToken, getUser } from '@/utils/storageUtils';
 
 if (process.env.NODE_ENV === 'development') {
   axios.defaults.baseURL = mockApiPath;
@@ -12,19 +13,29 @@ instance.defaults.headers.get['Content-type'] = 'application/json';
 instance.defaults.headers.post['Content-type'] = 'application/json';
 
 instance.interceptors.request.use(
-  (config) => config,
+  (config) => {
+    if (getToken() && config.headers) {
+      config.headers.Authorization = getToken();
+    }
+    return config;
+  },
   (error) => Promise.reject(error),
 );
 
 instance.interceptors.response.use(
   (res) => {
-    console.log(res);
     if (res.status >= 200 && res.status < 300) {
       return Promise.resolve(res);
     }
     return Promise.reject(res);
   },
-  (error) => Promise.reject(error),
+  (error) => {
+    if (axios.isCancel(error)) {
+      return Promise.reject(error);
+    }
+    const res = error.response.data;
+    return Promise.reject(res);
+  },
 );
 
 export function get<P = any, R = any>(path: string, params?: P): Promise<R> {

@@ -16,26 +16,34 @@ const Login: React.FC = () => {
   const history = useHistory();
 
   const { login } = ServicesApi;
+  const [form] = Form.useForm();
 
   const handleToHomePage = () => {
-    login({ userName: '123', passWord: '123' }).then((res) => {
-      console.log(res);
-    }).catch(() => {});
+    const { userName, passWord } = form.getFieldsValue();
+    login({ userName, passWord }).then((res) => {
+      const { access_id: accessId, access_token: accessToken } = res.data;
+      saveUser(accessId, accessToken);
+      history.push(routerPath.Home);
+    }).catch((err) => {
+      // TODO login error events
+      console.log(err);
+    });
   };
   const renderLoginForm = () => (
     <Form
+      form={form}
       name="normal_login"
       className="login-form"
       initialValues={{ remember: true }}
     >
       <Form.Item
-        name="username"
+        name="userName"
         rules={[{ required: true, message: 'Please input your Username!' }]}
       >
         <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username" />
       </Form.Item>
       <Form.Item
-        name="password"
+        name="passWord"
         rules={[{ required: true, message: 'Please input your Password!' }]}
       >
         <Input

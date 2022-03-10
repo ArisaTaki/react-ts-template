@@ -15,10 +15,9 @@ app.use(express.json({ limit: '150mb' }))
 app.use((req, res) => {
     let { path, url, query, method } = req
     let responseFilePath = `${mockJsonFileDir}${path}.json`
-    // console.log('path:' + responseFilePath)
-    console.log('mockJsonFileDir:' + mockJsonFileDir)
-    console.log('path:' + path)
-    console.log(responseFilePath)
+    // console.log('mockJsonFileDir:' + mockJsonFileDir)
+    // console.log('path:' + path)
+    // console.log(responseFilePath)
 
     fs.access(responseFilePath, fs.constants.F_OK, (err) => {
         if (err) {
@@ -33,6 +32,7 @@ app.use((req, res) => {
                     })
                     return;
                 }
+                console.log(mockJsonData)
                 res.writeHead(200, {
                     'Content-Type': 'application/json; charset=UTF-8',
                 })

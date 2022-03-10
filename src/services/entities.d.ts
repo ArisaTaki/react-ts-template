@@ -29,7 +29,7 @@ export namespace ApiData {
       // 密码
       passWord: string
     }
-    interface ResponseData extends BaseResponse {
+    interface ResponseData extends BaseResponse<ResponseData> {
       //  token
       access_token: string
       // id

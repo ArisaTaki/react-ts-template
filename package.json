@@ -20,7 +20,9 @@
     "antd": "^4.18.7",
     "axios": "^0.25.0",
     "babel-eslint": "^10.1.0",
+    "body-parser": "^1.19.2",
     "classnames": "^2.3.1",
+    "concurrently": "^7.0.0",
     "cors": "^2.8.5",
     "customize-cra": "^1.0.0",
     "eslint": "^7.11.0",
@@ -55,7 +57,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-app-rewired start \"node ./scripts/data-mock-server.js\"",
+    "start": "concurrently \"react-app-rewired start\" \"node scripts/data-mock-server.js\"",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject"
