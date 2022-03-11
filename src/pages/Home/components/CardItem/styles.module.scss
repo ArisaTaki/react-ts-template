@@ -1,0 +1,13 @@
+.main {
+  width: calc(50% - 10px);
+
+  margin-bottom: 10px;
+
+  &:nth-child(odd) {
+    margin-right: 10px;
+  }
+
+  &:nth-child(even) {
+    margin-left: 10px;
+  }
+}

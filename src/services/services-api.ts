@@ -5,8 +5,11 @@ import { ApiData } from './entities';
 import { ApiPaths } from '@/services/api-path';
 
 export const ServicesApi = {
-  login: (params: ApiData.UserLoginInfo.Params):
-  Promise<ApiData.UserLoginInfo.ResponseData> => post(ApiPaths.login, params),
+  login: (params: ApiData.Login.Params):
+  Promise<ApiData.Login.ResponseData> => post(ApiPaths.login, params),
 
-  getUserInfo: (): Promise<ApiData.UserInfo.ResponseData> => get(ApiPaths.getUserInfo),
+  getUserInfo: (): Promise<ApiData.GetUserInfo.ResponseData> => get(ApiPaths.getUserInfo),
+
+  getCameraBrandsList: ():
+  Promise<ApiData.GetAllCameraBrands.ResponseData> => get(ApiPaths.getCameraList),
 };

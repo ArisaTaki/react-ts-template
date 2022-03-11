@@ -18,10 +18,20 @@
   height: 32px;
   margin: 16px;
   background: rgba(255, 255, 255, 0.3);
+  background: url("../../assets/logo-mini.svg") no-repeat;
+
+  &.large {
+    background: url("../../assets/logo.svg") no-repeat center;
+  }
+}
+
+.aside {
+  background: #ffffff;
 }
 
 .site-layout  {
   .site-layout-background {
+    overflow-y: auto;
     background: #fff;
   }
 

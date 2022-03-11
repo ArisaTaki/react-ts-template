@@ -1,0 +1,40 @@
+{
+  "status": 200,
+  "error": false,
+  "message": "",
+  "code": "0",
+  "data": {
+    "brands": [
+      {
+        "brand": "佳能",
+        "description": "现在有{number}台，主要用于...",
+        "imageUrl": "https://shop.canon.com.cn/image/catalog/0001/eosr6taoji3.jpg"
+      },
+      {
+        "brand": "索尼",
+        "description": "现在有{number}台，主要用于...",
+        "imageUrl": "https://www.sonystyle.com.cn/content/dam/sonystyle/products/handycam/fdr_ax700/product/img_fdr_ax700_b_2.jpg.thumb.537.537.png"
+      },
+      {
+        "brand": "大疆",
+        "description": "现在有{number}台，主要用于...",
+        "imageUrl": "https://stormsend1.djicdn.com/tpc/uploads/carousel/image/393a139f28da95634c421eada4555b79@ultra.jpg"
+      },
+      {
+        "brand": "松下",
+        "description": "现在有{number}台，主要用于...",
+        "imageUrl": "https://img13.360buyimg.com/n1/jfs/t1/183814/4/16336/34018/6100bc3eEd6db684b/3c0874579e98ec04.jpg"
+      },
+      {
+        "brand": "GoPro",
+        "description": "现在有{number}台，主要用于...",
+        "imageUrl": "https://static.gopro.com/assets/blta2b8522e5372af40/bltfb9ae0f223213faf/61238dcc043d546bb462b036/pdp-h10b-protective-housing-gallery-1.png?width=2880&quality=80&auto=webp&disable=upscale"
+      },
+      {
+        "brand": "insta360",
+        "description": "现在有{number}台，主要用于...",
+        "imageUrl": "https://static.insta360.com/assets/storage/20200102/63898711db9645a360a44f7de514bf07/%E8%83%8C%E9%9D%A2.jpg"
+      }
+    ]
+  }
+}

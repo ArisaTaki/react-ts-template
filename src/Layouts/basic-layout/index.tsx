@@ -19,7 +19,7 @@ import {
   deleteUser, deleteUserInfo, getUserInfoStore,
 } from '@/utils/storageUtils';
 import routerPath from '@/router/router-path';
-import { ApiData } from '@/services/entities';
+import { UserInfo } from '@/services/entities';
 
 const cx = className.bind(styles);
 
@@ -33,7 +33,7 @@ export interface BasicLayoutProps {
 
 const BasicLayout: React.FC<BasicLayoutProps> = ({ children }) => {
   const history = useHistory();
-  const [userInfo, setUserInfo] = useState<ApiData.UserInfo.ResponseData>();
+  const [userInfo, setUserInfo] = useState<UserInfo>();
   const [collapsed, setCollapsed] = useState<boolean>(false);
 
   useEffect(() => {
@@ -42,7 +42,12 @@ const BasicLayout: React.FC<BasicLayoutProps> = ({ children }) => {
 
   const showUserMenu = () => (
     <Menu>
-      <Menu.Item key={1}>
+      <Menu.Item key="1">
+        <div onClick={() => {}}>
+          {userInfo?.name}
+        </div>
+      </Menu.Item>
+      <Menu.Item key="2">
         <div onClick={() => {
           deleteUserInfo();
           deleteUser();
@@ -57,9 +62,9 @@ const BasicLayout: React.FC<BasicLayoutProps> = ({ children }) => {
 
   return (
     <Layout className={cx('main')}>
-      <Sider trigger={null} collapsible collapsed={collapsed}>
-        <div className={cx('logo')} />
-        <Menu theme="dark" mode="inline" defaultSelectedKeys={[history.location.pathname]}>
+      <Sider trigger={null} collapsible collapsed={collapsed} className={cx('aside')}>
+        <div className={cx('logo', { large: !collapsed })} />
+        <Menu theme="light" mode="inline" defaultSelectedKeys={[history.location.pathname]}>
           <Menu.Item key={routerPath.Home} icon={<HomeOutlined />}>
             <Link to={routerPath.Home}>首页</Link>
           </Menu.Item>
@@ -99,7 +104,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = ({ children }) => {
           className={cx('site-layout-background')}
           style={{
             margin: '24px 16px',
-            padding: 24,
+            padding: '24px 24px 14px 24px',
             minHeight: 280,
           }}
         >

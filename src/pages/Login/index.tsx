@@ -25,8 +25,8 @@ const Login: React.FC = () => {
       const { userName, passWord } = form.getFieldsValue();
       const checkResult = await formRef.current?.validateFields();
       login({ userName, passWord }).then((res) => {
-        const { access_id: accessId, access_token: accessToken } = res.data;
-        saveUser(accessId, accessToken);
+        const { data } = res;
+        saveUser(data);
         getUserInfo().then((user) => {
           saveUserInfo(user.data);
           message.success(`欢迎你，${user.data.name}`);

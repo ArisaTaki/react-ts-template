@@ -1,12 +1,12 @@
 // login Status here
 import store from 'store';
-import { ApiData } from '@/services/entities';
+import { UserInfo, UserTokenKeyInfo } from '@/services/entities';
 
 const USER_KEY = 'user_key';
 const USER_TOKEN = 'user_token';
 const USER_INFO = 'user_info';
 
-export const saveUserInfo = (userInfo: ApiData.UserInfo.ResponseData) => {
+export const saveUserInfo = (userInfo: UserInfo) => {
   store.set(USER_INFO, userInfo);
 };
 
@@ -16,9 +16,9 @@ export const deleteUserInfo = () => {
   store.remove(USER_INFO);
 };
 
-export const saveUser = (user: string, token: string) => {
-  store.set(USER_KEY, user);
-  store.set(USER_TOKEN, token);
+export const saveUser = (data: UserTokenKeyInfo) => {
+  store.set(USER_KEY, data.access_id);
+  store.set(USER_TOKEN, data.access_token);
 };
 
 export const getUser = () => store.get(USER_KEY);
