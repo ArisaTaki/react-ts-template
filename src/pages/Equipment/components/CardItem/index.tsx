@@ -41,8 +41,14 @@ const CardItem: React.FC<CardProps> = ({ item }: CardProps) => {
         />
             )}
       actions={[
-        <PlusOutlined key="setting" />,
-        <UnorderedListOutlined key="ellipsis" />,
+        <div>
+          <PlusOutlined key="setting" />
+          <span className={cx('item-choose')}>编辑种类</span>
+        </div>,
+        <div>
+          <UnorderedListOutlined key="ellipsis" />
+          <span className={cx('item-choose')}>设备列表</span>
+        </div>,
       ]}
     >
       <Meta
@@ -50,7 +56,7 @@ const CardItem: React.FC<CardProps> = ({ item }: CardProps) => {
         description={descriptionDom()}
       />
       <Drawer
-        contentWrapperStyle={{ width: 280 }}
+        contentWrapperStyle={{ width: '85%' }}
         title="详细描述"
         placement="right"
         closable

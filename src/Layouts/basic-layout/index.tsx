@@ -70,10 +70,10 @@ const BasicLayout: React.FC<BasicLayoutProps> = ({ children }) => {
           </Menu.Item>
           <SubMenu key="sub1" icon={<BarsOutlined />} title="设备管理">
             <Menu.Item key={routerPath.Equipment} icon={<VideoCameraOutlined />}>
-              <Link to={routerPath.Equipment}>设备列表</Link>
+              <Link to={routerPath.Equipment}>种类列表</Link>
             </Menu.Item>
             <Menu.Item key="2" icon={<VideoCameraAddOutlined />}>
-              <Link to={routerPath.EquipmentAdd}>设备新增</Link>
+              <Link to={routerPath.EquipmentAdd}>种类新增</Link>
             </Menu.Item>
           </SubMenu>
           <Menu.Item key={routerPath.Question} icon={<QuestionCircleOutlined />}>
