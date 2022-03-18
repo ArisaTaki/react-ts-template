@@ -4,4 +4,5 @@ export const ApiPaths = {
   login: '/user/login',
   getUserInfo: '/user/user-info',
   getCameraList: '/camera/categories',
+  updateAttachment: '/attachment/upload-file',
 };

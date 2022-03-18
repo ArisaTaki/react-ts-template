@@ -4,6 +4,8 @@ import {
 import { ApiData } from './entities';
 import { ApiPaths } from '@/services/api-path';
 
+const LargeFileRequestTimeOut = 5 * 60 * 1000;
+
 export const ServicesApi = {
   login: (params: ApiData.Login.Params):
   Promise<ApiData.Login.ResponseData> => post(ApiPaths.login, params),
@@ -12,4 +14,17 @@ export const ServicesApi = {
 
   getCameraBrandsList: ():
   Promise<ApiData.GetAllCameraBrands.ResponseData> => get(ApiPaths.getCameraList),
+
+  uploadAttachment: (params: ApiData.UpdateAttachment.Params):
+  Promise<ApiData.UpdateAttachment.ResponseData> => {
+    const { fileBinaryStream } = params;
+    const formData = new FormData();
+    formData.append('fileBinaryStream', fileBinaryStream);
+    return post(ApiPaths.updateAttachment, formData, {
+      timeout: LargeFileRequestTimeOut,
+      headers: {
+        'Content-Type': 'multipart/form-data;',
+      },
+    });
+  },
 };

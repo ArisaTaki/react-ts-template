@@ -80,4 +80,16 @@ export namespace ApiData {
       brands: CameraBrand[]
     }
   }
+  // 上传
+  namespace UpdateAttachment {
+    interface Params {
+      fileBinaryStream: string
+    }
+
+    interface ResponseData extends BaseResponse<ResponseData> {
+      // 添加ID （拟定）
+      uniqueId: string
+    }
+    interface Response extends BaseResponse<ResponseData> {}
+  }
 }

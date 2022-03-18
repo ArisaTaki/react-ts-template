@@ -1,0 +1,9 @@
+{
+  "status": 200,
+  "error": false,
+  "message": "",
+  "code": "0",
+  "data": {
+    "uniqueId": "test-attachment-uniqueId"
+  }
+}
