@@ -15,7 +15,8 @@ export const ServicesApi = {
   getCameraBrandsList: ():
   Promise<ApiData.GetAllCameraBrands.ResponseData> => get(ApiPaths.getCameraList),
 
-  uploadAttachment: (params: ApiData.UpdateAttachment.Params):
+  uploadAttachment: (params: ApiData.UpdateAttachment.Params,
+    uploadProgressEvent?: (e: ProgressEvent) => void):
   Promise<ApiData.UpdateAttachment.ResponseData> => {
     const { fileBinaryStream } = params;
     const formData = new FormData();
@@ -25,6 +26,7 @@ export const ServicesApi = {
       headers: {
         'Content-Type': 'multipart/form-data;',
       },
+      onUploadProgress: uploadProgressEvent,
     });
   },
 };

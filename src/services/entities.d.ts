@@ -87,9 +87,9 @@ export namespace ApiData {
     }
 
     interface ResponseData extends BaseResponse<ResponseData> {
-      // 添加ID （拟定）
-      uniqueId: string
+      // 添加URL （拟定）
+      imageUrl: string
     }
-    interface Response extends BaseResponse<ResponseData> {}
+    type Response = BaseResponse<ResponseData>;
   }
 }

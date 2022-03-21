@@ -1,32 +1,40 @@
 import React, { useState } from 'react';
 import classNames from 'classnames/bind';
 import {
-  Form, Input, Upload, Button, message,
+  Form, Input, Upload, Button, message, Progress,
 } from 'antd';
 import ImgCrop from 'antd-img-crop';
-import { RcFile, UploadFile } from 'antd/es/upload/interface';
-import { UploadChangeParam } from 'antd/lib/upload/interface';
-import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
+import { RcFile } from 'antd/es/upload/interface';
+import { PlusOutlined } from '@ant-design/icons';
 import styles from './styles.module.scss';
 import { ServicesApi } from '@/services/services-api';
 import { getBase64 } from '@/utils/fileUtils';
 
 const cx = classNames.bind(styles);
 
+declare const ProgressStatuses: ['exception', 'success', 'active', 'normal'];
+
 interface IUploadType {
   fileList: RcFile[]
-  loading: boolean
   fileBase64: string
+}
+
+interface UploadProgressConfig {
+  status: typeof ProgressStatuses[number]
+  percent: number
 }
 
 const { uploadAttachment } = ServicesApi;
 
 const EquipmentAdd: React.FC = () => {
+  const fileTypeCases = ['image/png', 'image/jpeg', 'image/jpg', 'image/gif'];
   const [uploadFile, setUploadFile] = useState<IUploadType>({
     fileList: [],
-    loading: false,
     fileBase64: '',
   });
+  const [loading, setLoading] = useState(false);
+  const [serviceImgUrl, setServiceImgUrl] = useState('');
+  const [progressInfo, setProgressInfo] = useState<UploadProgressConfig>({ status: 'active', percent: 0 });
 
   const layout = {
     labelCol: { span: 4 },
@@ -42,17 +50,45 @@ const EquipmentAdd: React.FC = () => {
     console.log(values);
   };
 
-  const showImagePreview = (file: UploadFile) => {
-    console.log(file);
+  const uploadProgressEvent = (e: ProgressEvent) => {
+    const percent = ((e.loaded / e.total) * 100);
+    setProgressInfo({ ...progressInfo, percent, status: percent < 100 ? 'active' : 'success' });
   };
 
   const uploadMethod = () => {
-    console.log();
+    setLoading(true);
+    getBase64(uploadFile.fileList[0]).then((res) => {
+      uploadAttachment({ fileBinaryStream: res }, uploadProgressEvent).then((data) => {
+        setLoading(false);
+        setUploadFile({ ...uploadFile, fileBase64: res });
+        setServiceImgUrl(data.imageUrl);
+      }).catch((err) => {
+        message.error('上传文件出错').then(() => {
+          setLoading(false);
+        });
+      });
+    });
+  };
+
+  const changeEvent = () => {
+    console.log('changing');
+  };
+
+  const cropOkEvent = (file: File) => {
+    // 这里的file是裁剪之后的file
+    setUploadFile({ ...uploadFile, fileList: [file as RcFile] });
+  };
+
+  const checkFile = (file: RcFile | File): boolean => {
+    if (fileTypeCases.filter((v) => file.type === v).length === 0) {
+      message.error('请传入正确的格式文件').then(() => false);
+    }
+    return true;
   };
 
   const uploadButton = (
     <div>
-      {uploadFile.loading ? <LoadingOutlined /> : <PlusOutlined />}
+      <PlusOutlined />
       <div style={{ marginTop: 8 }}>Upload</div>
     </div>
   );
@@ -70,20 +106,23 @@ const EquipmentAdd: React.FC = () => {
           valuePropName="fileList"
           extra="品牌例图"
         >
-          <ImgCrop rotate>
-            <Upload
-              fileList={uploadFile.fileList}
-              listType="picture-card"
-              showUploadList={false}
-              onRemove={() => {
-                setUploadFile({ ...uploadFile, fileList: [] });
-              }}
-              onPreview={showImagePreview}
-              customRequest={uploadMethod}
-            >
-              {uploadFile.fileList[1] ? <img src={uploadFile.fileList[1].webkitRelativePath} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
-            </Upload>
-          </ImgCrop>
+          <>
+            <ImgCrop rotate beforeCrop={checkFile} onModalOk={cropOkEvent}>
+              <Upload
+                listType="picture-card"
+                className="avatar-uploader"
+                onChange={changeEvent}
+                showUploadList={false}
+                customRequest={uploadMethod}
+              >
+                {uploadFile.fileBase64 ? <img src={uploadFile.fileBase64} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
+              </Upload>
+            </ImgCrop>
+            <Progress
+              percent={progressInfo?.percent}
+              status={progressInfo?.status}
+            />
+          </>
         </Form.Item>
         <Form.Item name={['user', 'introduction']} label="概述">
           <Input.TextArea />
