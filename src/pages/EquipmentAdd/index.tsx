@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import classNames from 'classnames/bind';
 import {
   Form, Input, Upload, Button, message, Progress,
@@ -32,8 +32,8 @@ const EquipmentAdd: React.FC = () => {
     fileList: [],
     fileBase64: '',
   });
-  const [loading, setLoading] = useState(false);
   const [serviceImgUrl, setServiceImgUrl] = useState('');
+  const urlRef = useRef('');
   const [progressInfo, setProgressInfo] = useState<UploadProgressConfig>({ status: 'active', percent: 0 });
 
   const layout = {
@@ -51,20 +51,20 @@ const EquipmentAdd: React.FC = () => {
   };
 
   const uploadProgressEvent = (e: ProgressEvent) => {
-    const percent = ((e.loaded / e.total) * 100);
+    const percent = Math.floor((e.loaded / e.total) * 100);
+    if (percent >= 100) {
+      setUploadFile({ ...uploadFile, fileBase64: urlRef.current });
+    }
     setProgressInfo({ ...progressInfo, percent, status: percent < 100 ? 'active' : 'success' });
   };
 
   const uploadMethod = () => {
-    setLoading(true);
     getBase64(uploadFile.fileList[0]).then((res) => {
+      urlRef.current = res;
       uploadAttachment({ fileBinaryStream: res }, uploadProgressEvent).then((data) => {
-        setLoading(false);
-        setUploadFile({ ...uploadFile, fileBase64: res });
         setServiceImgUrl(data.imageUrl);
       }).catch((err) => {
         message.error('上传文件出错').then(() => {
-          setLoading(false);
         });
       });
     });

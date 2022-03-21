@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 
-const useSyncCallBack = (callback: () => void) => {
+const useSyncCallBack = (callback: (e?: any) => void) => {
   const [proxyState, setProxyState] = useState({ current: false });
 
   const Func = useCallback(() => {
