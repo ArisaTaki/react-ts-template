@@ -49,6 +49,8 @@ export interface CameraInfo {
 }
 
 export interface CameraBrand {
+  // Id
+  brandId: string;
   // 品牌
   brand: string;
   // 此品牌情况

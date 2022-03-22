@@ -20,7 +20,7 @@ const Equipment: React.FC = () => {
   }, []);
   return (
     <div className={cx('main')}>
-      {allBrands.map((item, index) => <CardItem key={index} item={item} />)}
+      {allBrands.map((item) => <CardItem key={item.brandId} item={item} />)}
     </div>
   );
 };
