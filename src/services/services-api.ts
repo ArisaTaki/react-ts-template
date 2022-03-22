@@ -29,4 +29,7 @@ export const ServicesApi = {
       onUploadProgress: uploadProgressEvent,
     });
   },
+
+  addBrand: (params: ApiData.AddBrand.Params):
+  Promise<ApiData.AddBrand.Response> => post(ApiPaths.addBrand, params),
 };

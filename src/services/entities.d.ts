@@ -92,4 +92,18 @@ export namespace ApiData {
     }
     type Response = BaseResponse<ResponseData>;
   }
+
+  // 增加分类
+  namespace AddBrand {
+    interface Params {
+      // 品牌
+      brand: string;
+      // 备注
+      description?: string;
+      // 图片路径
+      imgUrl: string;
+    }
+
+    type Response = BaseResponse;
+  }
 }
