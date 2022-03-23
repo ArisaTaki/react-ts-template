@@ -6,7 +6,7 @@ const pfs = require('fs/promises');
 
 const mockJsonFileDir = path.resolve(__dirname, './../mock');
 
-const port = 3002;
+const port = 3911;
 const app = express();
 
 app.use(cors());
