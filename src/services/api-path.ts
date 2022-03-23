@@ -6,4 +6,5 @@ export const ApiPaths = {
   getCameraList: '/camera/categories',
   updateAttachment: '/attachment/upload-file',
   addBrand: '/brand/add',
+
 };
