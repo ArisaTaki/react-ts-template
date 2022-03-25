@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import classNames from 'classnames/bind';
 import { Card, Drawer } from 'antd';
-import { PlusOutlined, UnorderedListOutlined } from '@ant-design/icons';
+import { EditOutlined, UnorderedListOutlined } from '@ant-design/icons';
+import { useHistory } from 'react-router-dom';
 import styles from './styles.module.scss';
 import { CameraBrand } from '@/services/entities';
+import routerPath from '@/router/router-path';
 
 const cx = classNames.bind(styles);
 
@@ -15,8 +17,11 @@ const { Meta } = Card;
 
 const CardItem: React.FC<CardProps> = ({ item }: CardProps) => {
   const [showAllDescription, setShowAllDescription] = useState<boolean>(false);
+  const history = useHistory();
 
-  const { description, brand, imageUrl } = item;
+  const {
+    description, brand, imageUrl, brandId,
+  } = item;
 
   const descriptionDom = ():React.ReactNode => (
     <div
@@ -30,6 +35,10 @@ const CardItem: React.FC<CardProps> = ({ item }: CardProps) => {
 
   );
 
+  const goToEditPage = () => {
+    history.push(routerPath.EquipmentEdit.replace(':brandId', brandId));
+  };
+
   return (
     <Card
       className={cx('main')}
@@ -42,8 +51,8 @@ const CardItem: React.FC<CardProps> = ({ item }: CardProps) => {
             )}
       actions={[
         <div>
-          <PlusOutlined key="setting" />
-          <span className={cx('item-choose')}>编辑种类</span>
+          <EditOutlined key="setting" />
+          <span className={cx('item-choose')} onClick={goToEditPage}>编辑种类</span>
         </div>,
         <div>
           <UnorderedListOutlined key="ellipsis" />

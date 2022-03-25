@@ -9,11 +9,27 @@ const mockJsonFileDir = path.resolve(__dirname, './../mock');
 const port = 3911;
 const app = express();
 
+// 需要进行匹配路由带有参数的mock路径
+const dynamicRouteRegexes = [/^\/brand\/(\w+)$/i]
+
+// 忽视的特定路径
+const shouldNotMatchDynamicRoutes = ['/brand/add']
+
 app.use(cors());
 app.use(express.json({ limit: '150mb' }))
 
 app.use((req, res) => {
     let { path, url, query, method } = req
+    if (!shouldNotMatchDynamicRoutes.includes(path)) {
+        for (let i = 0; i < dynamicRouteRegexes.length; i++) {
+            const matchRes = path.match(dynamicRouteRegexes[i]);
+            if (matchRes) {
+                // replace the dynamic params to 1, use the 1.json data
+                path = path.replace(matchRes[1], '1')
+                break;
+            }
+        }
+    }
     let responseFilePath = `${mockJsonFileDir}${path}.json`
     // console.log('mockJsonFileDir:' + mockJsonFileDir)
     // console.log('path:' + path)
@@ -32,7 +48,7 @@ app.use((req, res) => {
                     })
                     return;
                 }
-                console.log(mockJsonData)
+                // console.log(mockJsonData)
                 res.writeHead(200, {
                     'Content-Type': 'application/json; charset=UTF-8',
                 })
@@ -41,7 +57,6 @@ app.use((req, res) => {
         }
     })
 })
-
 
 app.listen(port, () => {
     console.log(`Mock data server is listening at http://localhost:${port}`);

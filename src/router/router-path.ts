@@ -7,6 +7,7 @@ const routerPath = {
   NotFind: '/404',
   Equipment: '/equipment',
   EquipmentAdd: '/equipment/add',
+  EquipmentEdit: '/equipment/edit/:brandId',
 };
 
 export default routerPath;

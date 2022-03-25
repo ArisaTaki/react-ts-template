@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import classNames from 'classnames/bind';
 import {
   Button, Form, Input, message, Progress, Upload,
@@ -10,7 +10,8 @@ import { PlusOutlined } from '@ant-design/icons';
 import styles from './styles.module.scss';
 import routerPath from '@/router/router-path';
 import { ServicesApi } from '@/services/services-api';
-import { BrandTypeProps, IUploadType, UploadProgressConfig } from '@/components/EquipmentAddOrEdit/utils';
+import { BrandTypeProps, IUploadType, UploadProgressConfig } from '@/pages/EquipmentAdd/components/EquipmentAddOrEdit/utils';
+import { getBase64 } from '@/utils/fileUtils';
 
 const cx = classNames.bind(styles);
 
@@ -19,41 +20,50 @@ const validateMessages = {
   required: '${label}不可为空',
 };
 
+const fileTypeCases = ['image/png', 'image/jpeg', 'image/jpg', 'image/gif'];
+
 const layout = {
   labelCol: { span: 4 },
   wrapperCol: { span: 20 },
 };
 
 interface EquipmentAddOrEditProps {
-  checkFile: (file: RcFile | File) => boolean
-  cropOkEvent: (file: File) => void
-  uploadMethod: () => void
-  imgUrl: string
-  uploadFile: IUploadType
-  uploading: boolean
-  progressInfo: UploadProgressConfig
-  shouldSubmit: boolean
+  initData?: BrandTypeProps
 }
 
-const { addBrand } = ServicesApi;
+const { uploadAttachment, addBrand } = ServicesApi;
 
 const EquipmentAddOrEdit: React.FC<EquipmentAddOrEditProps> = ({
-  checkFile,
-  cropOkEvent,
-  uploadMethod,
-  imgUrl,
-  uploadFile,
-  uploading,
-  progressInfo,
-  shouldSubmit,
+  initData = {},
 }) => {
   const history = useHistory();
+
+  const [uploadFile, setUploadFile] = useState<IUploadType>({
+    fileList: [],
+    fileBase64: '',
+  });
+  const [progressInfo, setProgressInfo] = useState<UploadProgressConfig>({ status: 'active', percent: 0 });
+  const [uploading, setUploading] = useState(false);
+  const [shouldSubmit, setShouldSubmit] = useState(false);
+  const [imgUrl, setImgUrl] = useState('');
+
+  const localUrlRef = useRef<string>('');
+
   const onFinish = (values: BrandTypeProps) => {
     const { brand, description } = values.brandInfo;
     addBrand({ description, brand, imgUrl }).then((res) => {
       message.success('添加成功');
       history.push(routerPath.Equipment);
     }).catch((err) => {});
+  };
+
+  const uploadProgressEvent = (e: ProgressEvent) => {
+    const percent = Math.floor((e.loaded / e.total) * 100);
+    if (percent >= 100) {
+      setUploadFile({ ...uploadFile, fileBase64: localUrlRef.current });
+    }
+    setUploading(true);
+    setProgressInfo({ ...progressInfo, percent, status: percent < 100 ? 'active' : 'success' });
   };
 
   const uploadButton = (
@@ -63,8 +73,35 @@ const EquipmentAddOrEdit: React.FC<EquipmentAddOrEditProps> = ({
     </div>
   );
 
+  const uploadMethod = () => {
+    setShouldSubmit(false);
+    getBase64(uploadFile.fileList[0]).then((res) => {
+      localUrlRef.current = res;
+      uploadAttachment({ fileBinaryStream: res }, uploadProgressEvent).then((data) => {
+        setUploading(false);
+        setImgUrl(data.data.imageUrl);
+        setShouldSubmit(true);
+      }).catch((err) => {
+        message.error('上传文件出错').then(() => {
+        });
+      });
+    });
+  };
+
+  const checkFile = (file: RcFile | File): boolean => {
+    if (fileTypeCases.filter((v) => file.type === v).length === 0) {
+      message.error('请传入正确的格式文件').then(() => false);
+    }
+    return true;
+  };
+
+  const cropOkEvent = (file: File) => {
+    // 这里的file是裁剪之后的file
+    setUploadFile({ ...uploadFile, fileList: [file as RcFile] });
+  };
+
   return (
-    <Form {...layout} name="nest-messages" onFinish={onFinish} validateMessages={validateMessages}>
+    <Form initialValues={initData} {...layout} name="nest-messages" onFinish={onFinish} validateMessages={validateMessages}>
       <Form.Item name={['brandInfo', 'brand']} label="品牌" rules={[{ required: true }]}>
         <Input />
       </Form.Item>

@@ -59,6 +59,15 @@ export interface CameraBrand {
   imageUrl?: string;
 }
 
+export interface BrandInfo {
+  // 品牌
+  brand: string;
+  // 此品牌情况
+  description?: string;
+  // 图片URL
+  imageUrl?: string;
+}
+
 export namespace ApiData {
   // 用户登录信息
   namespace Login {
@@ -107,5 +116,18 @@ export namespace ApiData {
     }
 
     type Response = BaseResponse;
+  }
+
+  // 获取某一个类型的info数据
+  namespace GetBrandInfo {
+    interface Params {
+      // Id
+      brandId: string;
+    }
+    interface ResponseData extends BaseResponse<ResponseData> {
+      brandInfo: BrandInfo
+    }
+
+    type Response = BaseResponse<ResponseData>;
   }
 }

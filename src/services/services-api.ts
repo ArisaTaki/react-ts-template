@@ -32,4 +32,7 @@ export const ServicesApi = {
 
   addBrand: (params: ApiData.AddBrand.Params):
   Promise<ApiData.AddBrand.Response> => post(ApiPaths.addBrand, params),
+
+  getBrandInfo: (params: ApiData.GetBrandInfo.Params):
+  Promise<ApiData.GetBrandInfo.ResponseData> => get(ApiPaths.getBrandInfo.replace(':brandId', params.brandId)),
 };
