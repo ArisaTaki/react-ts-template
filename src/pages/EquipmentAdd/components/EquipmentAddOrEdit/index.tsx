@@ -144,6 +144,7 @@ const EquipmentAddOrEdit: React.FC<EquipmentAddOrEditProps> = ({
                 className="avatar-uploader"
                 showUploadList={false}
                 customRequest={uploadMethod}
+                disabled={uploading}
               >
                 {uploadFile.fileBase64 || imgUrl ? <img src={uploadFile.fileBase64 || imgUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
               </Upload>
