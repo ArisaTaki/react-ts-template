@@ -15,6 +15,6 @@ export interface UploadProgressConfig {
 export interface BrandTypeProps {
   brandInfo: {
     brand: string
-    description: string
+    description?: string
   }
 }

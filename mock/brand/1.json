@@ -1,0 +1,13 @@
+{
+  "status": 200,
+  "error": false,
+  "message": "",
+  "code": "0",
+  "data": {
+    "brandInfo": {
+      "brand": "佳能",
+      "description": "现在有{number}台佳能，主要用于测试主要用于测试主要用于测试主要用于测试主要用于测试",
+      "imageUrl": "https://s0.lgstatic.com/i/image6/M01/1F/6B/Cgp9HWBR1z2AB8UTAAG87bdA0lA648.jpg"
+    }
+  }
+}
