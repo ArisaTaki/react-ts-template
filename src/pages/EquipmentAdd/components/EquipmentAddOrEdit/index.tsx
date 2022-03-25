@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import classNames from 'classnames/bind';
 import {
-  Button, Form, Input, message, Progress, Upload,
+  Button, Form, Input, message, Progress, Spin, Upload,
 } from 'antd';
 import ImgCrop from 'antd-img-crop';
 import { useHistory } from 'react-router-dom';
@@ -44,6 +44,7 @@ const EquipmentAddOrEdit: React.FC<EquipmentAddOrEditProps> = ({
 }) => {
   const history = useHistory();
 
+  const [pending, setPending] = useState(false);
   const [uploadFile, setUploadFile] = useState<IUploadType>({
     fileList: [],
     fileBase64: '',
@@ -60,20 +61,27 @@ const EquipmentAddOrEdit: React.FC<EquipmentAddOrEditProps> = ({
   }, [imgUrl]);
 
   const onFinish = (values: BrandTypeProps) => {
+    setPending(true);
     console.log(values);
     const { brand, description } = values.brandInfo;
     if (isEdit) {
       EditBrandInfo({
         brandId: brandId ?? '', brand, description, imgUrl: imgUrl ?? '',
       }).then((res) => {
+        setPending(false);
         message.success('修改成功');
         history.push(routerPath.Equipment);
-      }).catch((err) => {});
+      }).catch((err) => {
+        setPending(false);
+      });
     } else {
       addBrand({ description, brand, imgUrl: imgUrl ?? '' }).then((res) => {
+        setPending(false);
         message.success('添加成功');
         history.push(routerPath.Equipment);
-      }).catch((err) => {});
+      }).catch((err) => {
+        setPending(false);
+      });
     }
   };
 
@@ -121,43 +129,45 @@ const EquipmentAddOrEdit: React.FC<EquipmentAddOrEditProps> = ({
   };
 
   return (
-    <Form initialValues={initData} {...layout} name="nest-messages" onFinish={onFinish} validateMessages={validateMessages}>
-      <Form.Item name={['brandInfo', 'brand']} label="品牌" rules={[{ required: true }]}>
-        <Input />
-      </Form.Item>
-      <Form.Item
-        label="图片"
-        extra={uploadFile.fileList[0]?.name || 'example.jpg'}
-      >
-        <div>
-          <ImgCrop rotate beforeCrop={checkFile} onModalOk={cropOkEvent}>
-            <Upload
-              listType="picture-card"
-              className="avatar-uploader"
-              showUploadList={false}
-              customRequest={uploadMethod}
-            >
-              {uploadFile.fileBase64 || imgUrl ? <img src={uploadFile.fileBase64 || imgUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
-            </Upload>
-          </ImgCrop>
-          <div className={cx('parent')}>
-            <Progress
-              className={cx(uploading ? 'active' : 'close')}
-              percent={progressInfo?.percent}
-              status={progressInfo?.status}
-            />
+    <Spin spinning={pending} tip="loading...">
+      <Form initialValues={initData} {...layout} name="nest-messages" onFinish={onFinish} validateMessages={validateMessages}>
+        <Form.Item name={['brandInfo', 'brand']} label="品牌" rules={[{ required: true }]}>
+          <Input />
+        </Form.Item>
+        <Form.Item
+          label="图片"
+          extra={uploadFile.fileList[0]?.name || 'example.jpg'}
+        >
+          <div>
+            <ImgCrop rotate beforeCrop={checkFile} onModalOk={cropOkEvent}>
+              <Upload
+                listType="picture-card"
+                className="avatar-uploader"
+                showUploadList={false}
+                customRequest={uploadMethod}
+              >
+                {uploadFile.fileBase64 || imgUrl ? <img src={uploadFile.fileBase64 || imgUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
+              </Upload>
+            </ImgCrop>
+            <div className={cx('parent')}>
+              <Progress
+                className={cx(uploading ? 'active' : 'close')}
+                percent={progressInfo?.percent}
+                status={progressInfo?.status}
+              />
+            </div>
           </div>
-        </div>
-      </Form.Item>
-      <Form.Item name={['brandInfo', 'description']} label="概述">
-        <Input.TextArea />
-      </Form.Item>
-      <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 12 }}>
-        <Button type="primary" htmlType="submit" disabled={!shouldSubmit}>
-          Submit
-        </Button>
-      </Form.Item>
-    </Form>
+        </Form.Item>
+        <Form.Item name={['brandInfo', 'description']} label="概述">
+          <Input.TextArea />
+        </Form.Item>
+        <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 12 }}>
+          <Button type="primary" htmlType="submit" disabled={!shouldSubmit}>
+            Submit
+          </Button>
+        </Form.Item>
+      </Form>
+    </Spin>
   );
 };
 
