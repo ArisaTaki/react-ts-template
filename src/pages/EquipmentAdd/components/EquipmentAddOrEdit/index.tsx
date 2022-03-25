@@ -62,7 +62,6 @@ const EquipmentAddOrEdit: React.FC<EquipmentAddOrEditProps> = ({
 
   const onFinish = (values: BrandTypeProps) => {
     setPending(true);
-    console.log(values);
     const { brand, description } = values.brandInfo;
     if (isEdit) {
       EditBrandInfo({
