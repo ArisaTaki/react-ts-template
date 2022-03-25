@@ -65,7 +65,7 @@ export interface BrandInfo {
   // 此品牌情况
   description?: string;
   // 图片URL
-  imageUrl?: string;
+  imageUrl: string;
 }
 
 export namespace ApiData {
@@ -129,5 +129,20 @@ export namespace ApiData {
     }
 
     type Response = BaseResponse<ResponseData>;
+  }
+
+  // 更改某个类型的info数据
+  namespace EditBrand {
+    interface Params {
+      brandId: string;
+      // 品牌
+      brand: string;
+      // 备注
+      description?: string;
+      // 图片路径
+      imgUrl: string;
+    }
+
+    type Response = BaseResponse;
   }
 }

@@ -8,7 +8,7 @@ const cx = classNames.bind(styles);
 const EquipmentAdd: React.FC = () => (
   <>
     <div>种类添加</div>
-    <EquipmentAddOrEdit />
+    <EquipmentAddOrEdit isEdit={false} />
   </>
 );
 

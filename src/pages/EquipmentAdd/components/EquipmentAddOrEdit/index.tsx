@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import classNames from 'classnames/bind';
 import {
   Button, Form, Input, message, Progress, Upload,
@@ -29,12 +29,18 @@ const layout = {
 
 interface EquipmentAddOrEditProps {
   initData?: BrandTypeProps
+  apiImgUrl?: string
+  brandId?: string
+  isEdit: boolean
 }
 
-const { uploadAttachment, addBrand } = ServicesApi;
+const { uploadAttachment, addBrand, EditBrandInfo } = ServicesApi;
 
 const EquipmentAddOrEdit: React.FC<EquipmentAddOrEditProps> = ({
-  initData = {},
+  initData,
+  apiImgUrl,
+  brandId,
+  isEdit,
 }) => {
   const history = useHistory();
 
@@ -45,16 +51,30 @@ const EquipmentAddOrEdit: React.FC<EquipmentAddOrEditProps> = ({
   const [progressInfo, setProgressInfo] = useState<UploadProgressConfig>({ status: 'active', percent: 0 });
   const [uploading, setUploading] = useState(false);
   const [shouldSubmit, setShouldSubmit] = useState(false);
-  const [imgUrl, setImgUrl] = useState('');
+  const [imgUrl, setImgUrl] = useState(isEdit ? apiImgUrl : '');
 
   const localUrlRef = useRef<string>('');
 
+  useEffect(() => {
+    setShouldSubmit(true);
+  }, [imgUrl]);
+
   const onFinish = (values: BrandTypeProps) => {
+    console.log(values);
     const { brand, description } = values.brandInfo;
-    addBrand({ description, brand, imgUrl }).then((res) => {
-      message.success('添加成功');
-      history.push(routerPath.Equipment);
-    }).catch((err) => {});
+    if (isEdit) {
+      EditBrandInfo({
+        brandId: brandId ?? '', brand, description, imgUrl: imgUrl ?? '',
+      }).then((res) => {
+        message.success('修改成功');
+        history.push(routerPath.Equipment);
+      }).catch((err) => {});
+    } else {
+      addBrand({ description, brand, imgUrl: imgUrl ?? '' }).then((res) => {
+        message.success('添加成功');
+        history.push(routerPath.Equipment);
+      }).catch((err) => {});
+    }
   };
 
   const uploadProgressEvent = (e: ProgressEvent) => {
@@ -117,7 +137,7 @@ const EquipmentAddOrEdit: React.FC<EquipmentAddOrEditProps> = ({
               showUploadList={false}
               customRequest={uploadMethod}
             >
-              {uploadFile.fileBase64 ? <img src={uploadFile.fileBase64} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
+              {uploadFile.fileBase64 || imgUrl ? <img src={uploadFile.fileBase64 || imgUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
             </Upload>
           </ImgCrop>
           <div className={cx('parent')}>

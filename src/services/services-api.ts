@@ -35,4 +35,8 @@ export const ServicesApi = {
 
   getBrandInfo: (params: ApiData.GetBrandInfo.Params):
   Promise<ApiData.GetBrandInfo.ResponseData> => get(ApiPaths.getBrandInfo.replace(':brandId', params.brandId)),
+
+  EditBrandInfo: (params: ApiData.EditBrand.Params):
+  Promise<ApiData.EditBrand.Response> => post(ApiPaths.EditBrand.replace(':brandId',
+    params.brandId), params),
 };
