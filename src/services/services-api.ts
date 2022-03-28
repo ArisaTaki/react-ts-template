@@ -13,7 +13,7 @@ export const ServicesApi = {
   getUserInfo: (): Promise<ApiData.GetUserInfo.ResponseData> => get(ApiPaths.getUserInfo),
 
   getCameraBrandsList: ():
-  Promise<ApiData.GetAllCameraBrands.ResponseData> => get(ApiPaths.getCameraList),
+  Promise<ApiData.GetAllCameraBrands.ResponseData> => get(ApiPaths.getCameraBrandList),
 
   uploadAttachment: (params: ApiData.UpdateAttachment.Params,
     uploadProgressEvent?: (e: ProgressEvent) => void):
@@ -36,7 +36,10 @@ export const ServicesApi = {
   getBrandInfo: (params: ApiData.GetBrandInfo.Params):
   Promise<ApiData.GetBrandInfo.ResponseData> => get(ApiPaths.getBrandInfo.replace(':brandId', params.brandId)),
 
-  EditBrandInfo: (params: ApiData.EditBrand.Params):
+  editBrandInfo: (params: ApiData.EditBrand.Params):
   Promise<ApiData.EditBrand.Response> => post(ApiPaths.EditBrand.replace(':brandId',
     params.brandId), params),
+
+  getCameraList: (params: ApiData.GetCameraListByBrand.Params):
+  Promise<ApiData.GetCameraListByBrand.ResponseData> => get(ApiPaths.getCameraList, params),
 };

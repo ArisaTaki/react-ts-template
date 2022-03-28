@@ -145,4 +145,16 @@ export namespace ApiData {
 
     type Response = BaseResponse;
   }
+
+  // 获得某个类型下的设备列表
+  namespace GetCameraListByBrand {
+    interface Params {
+      brandId: string
+    }
+
+    interface ResponseData extends BaseResponse<ResponseData> {
+      cameraList: CameraInfo[]
+    }
+    type Response = BaseResponse<ResponseData>;
+  }
 }

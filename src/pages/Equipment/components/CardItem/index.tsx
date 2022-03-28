@@ -39,6 +39,10 @@ const CardItem: React.FC<CardProps> = ({ item }: CardProps) => {
     history.push(routerPath.EquipmentEdit.replace(':brandId', brandId));
   };
 
+  const goToCameraList = () => {
+    history.push(routerPath.CameraList, brandId);
+  };
+
   return (
     <Card
       className={cx('main')}
@@ -56,7 +60,7 @@ const CardItem: React.FC<CardProps> = ({ item }: CardProps) => {
         </div>,
         <div>
           <UnorderedListOutlined key="ellipsis" />
-          <span className={cx('item-choose')}>设备列表</span>
+          <span className={cx('item-choose')} onClick={goToCameraList}>设备列表</span>
         </div>,
       ]}
     >

@@ -34,7 +34,7 @@ interface EquipmentAddOrEditProps {
   isEdit: boolean
 }
 
-const { uploadAttachment, addBrand, EditBrandInfo } = ServicesApi;
+const { uploadAttachment, addBrand, editBrandInfo } = ServicesApi;
 
 const EquipmentAddOrEdit: React.FC<EquipmentAddOrEditProps> = ({
   initData,
@@ -64,7 +64,7 @@ const EquipmentAddOrEdit: React.FC<EquipmentAddOrEditProps> = ({
     setPending(true);
     const { brand, description } = values.brandInfo;
     if (isEdit) {
-      EditBrandInfo({
+      editBrandInfo({
         brandId: brandId ?? '', brand, description, imgUrl: imgUrl ?? '',
       }).then((res) => {
         setPending(false);
