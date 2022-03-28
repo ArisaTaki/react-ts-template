@@ -37,7 +37,7 @@ export interface CameraInfo {
   // 网卡信息
   ethernetCards?: EthernetCardVO[];
   // 设备ID
-  id: number;
+  id: string;
   // 设备安装位置
   location: string;
   // 设备型号
@@ -156,5 +156,15 @@ export namespace ApiData {
       cameraList: CameraInfo[]
     }
     type Response = BaseResponse<ResponseData>;
+  }
+
+  // 删除设备数据组
+  namespace DelCameraList {
+    interface Params {
+      list: {
+        id: string
+      }[]
+    }
+    type Response = BaseResponse;
   }
 }

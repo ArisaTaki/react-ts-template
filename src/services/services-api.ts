@@ -42,4 +42,7 @@ export const ServicesApi = {
 
   getCameraList: (params: ApiData.GetCameraListByBrand.Params):
   Promise<ApiData.GetCameraListByBrand.ResponseData> => get(ApiPaths.getCameraList.replace(':brandId', params.brandId)),
+
+  delCameraList: (params: ApiData.DelCameraList.Params):
+  Promise<ApiData.DelCameraList.Response> => del(ApiPaths.delCameraList, params),
 };

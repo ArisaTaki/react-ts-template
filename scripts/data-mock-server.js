@@ -13,7 +13,7 @@ const app = express();
 const dynamicRouteRegexes = [/^\/brand\/(\w+)$/i, /^\/camera-list\/(\w+)$/i]
 
 // 忽视的特定路径
-const shouldNotMatchDynamicRoutes = ['/brand/add']
+const shouldNotMatchDynamicRoutes = ['/brand/add', '/camera-list/del']
 
 app.use(cors());
 app.use(express.json({ limit: '150mb' }))
