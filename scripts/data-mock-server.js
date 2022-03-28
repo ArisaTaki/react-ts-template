@@ -10,7 +10,7 @@ const port = 3911;
 const app = express();
 
 // 需要进行匹配路由带有参数的mock路径
-const dynamicRouteRegexes = [/^\/brand\/(\w+)$/i]
+const dynamicRouteRegexes = [/^\/brand\/(\w+)$/i, /^\/camera-list\/(\w+)$/i]
 
 // 忽视的特定路径
 const shouldNotMatchDynamicRoutes = ['/brand/add']

@@ -8,5 +8,5 @@ export const ApiPaths = {
   addBrand: '/brand/add',
   EditBrand: '/brand/:brandId',
   getBrandInfo: '/brand/:brandId',
-  getCameraList: '/camera-list',
+  getCameraList: '/camera-list/:brandId',
 };

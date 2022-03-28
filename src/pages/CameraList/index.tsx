@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import { useHistory } from 'react-router-dom';
-import { Button, Spin, Table } from 'antd';
+import {
+  Button, Modal, Spin, Switch, Table,
+} from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import { ColumnsType } from 'antd/es/table';
 import styles from './styles.module.scss';
@@ -16,6 +18,8 @@ const { getCameraList } = ServicesApi;
 const CameraList: React.FC = () => {
   const [pageLoading, setLoading] = useState(false);
   const [cameraList, setCameraList] = useState<CameraInfo[]>([]);
+  const [delConfirmFlag, setDelConfirmFlag] = useState(false);
+  const [delItemInfo, setDelItemInfo] = useState<CameraInfo>();
   const history = useHistory();
   useEffect(() => {
     if (!history.location.state) {
@@ -35,6 +39,7 @@ const CameraList: React.FC = () => {
       title: '编号',
       dataIndex: 'id',
       key: 'id',
+      render: (text: string) => <span className={cx('number')}>{text}</span>,
     },
     {
       title: '位置',
@@ -56,26 +61,34 @@ const CameraList: React.FC = () => {
       key: 'type',
       dataIndex: 'type',
     },
-    {
-      title: '操作',
-      key: 'action',
-      dataIndex: 'action',
-      width: 180,
-      render: () => (
-        <>
-          <Button danger type="primary" className={cx('del')}>删除</Button>
-          <Button type="primary">修改</Button>
-        </>
-      ),
-    },
   ];
+
+  const rowSelection = {
+    onChange: (selectedRowKeys: React.Key[], selectedRows: CameraInfo[]) => {
+      console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+    },
+  };
 
   const loadingIcon = () => <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
+  const delEvent = () => {
+    console.log(delItemInfo);
+  };
+
   return (
-    <Spin spinning={pageLoading} indicator={loadingIcon()}>
-      <Table columns={columns} dataSource={cameraList} rowKey="id" />
-    </Spin>
+    <>
+      <Modal
+        title="确认删除"
+        visible={delConfirmFlag}
+        onCancel={() => setDelConfirmFlag(false)}
+        onOk={delEvent}
+      >
+        是否确认删除该项？
+      </Modal>
+      <Spin spinning={pageLoading} indicator={loadingIcon()}>
+        <Table columns={columns} dataSource={cameraList} rowKey="id" rowSelection={rowSelection} />
+      </Spin>
+    </>
   );
 };
 

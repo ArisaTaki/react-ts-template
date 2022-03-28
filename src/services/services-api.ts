@@ -41,5 +41,5 @@ export const ServicesApi = {
     params.brandId), params),
 
   getCameraList: (params: ApiData.GetCameraListByBrand.Params):
-  Promise<ApiData.GetCameraListByBrand.ResponseData> => get(ApiPaths.getCameraList, params),
+  Promise<ApiData.GetCameraListByBrand.ResponseData> => get(ApiPaths.getCameraList.replace(':brandId', params.brandId)),
 };
