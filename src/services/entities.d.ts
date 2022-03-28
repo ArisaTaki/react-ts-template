@@ -35,7 +35,7 @@ export interface CameraInfo {
   // 备注
   description: string;
   // 网卡信息
-  ethernetCards: EthernetCardVO[];
+  ethernetCards?: EthernetCardVO[];
   // 设备ID
   id: number;
   // 设备安装位置

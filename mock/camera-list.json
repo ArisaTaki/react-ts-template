@@ -1,0 +1,109 @@
+{
+  "status": 200,
+  "error": false,
+  "message": "",
+  "code": "0",
+  "data": {
+    "cameraList": [
+      {
+        "id": "1",
+        "location": "天府大道一段",
+        "modal": "TCF-393",
+        "title": "违章拍照",
+        "brand": "佳能",
+        "type": "交通摄像头",
+        "description": "现在有{number}台佳能，主要用于测试主要用于测试主要用于测试主要用于测试主要用于测试"
+      },
+      {
+        "id": "2",
+        "location": "天府大道一段",
+        "modal": "TCF-393",
+        "title": "违章拍照",
+        "brand": "佳能",
+        "type": "交通摄像头",
+        "description": "现在有{number}台佳能，主要用于测试主要用于测试主要用于测试主要用于测试主要用于测试"
+      },
+      {
+        "id": "3",
+        "location": "天府大道一段",
+        "modal": "TCF-393",
+        "title": "违章拍照",
+        "brand": "佳能",
+        "type": "交通摄像头",
+        "description": "现在有{number}台佳能，主要用于测试主要用于测试主要用于测试主要用于测试主要用于测试"
+      },
+      {
+        "id": "4",
+        "location": "天府大道一段",
+        "modal": "TCF-393",
+        "title": "违章拍照",
+        "brand": "佳能",
+        "type": "交通摄像头",
+        "description": "现在有{number}台佳能，主要用于测试主要用于测试主要用于测试主要用于测试主要用于测试"
+      },
+      {
+        "id": "5",
+        "location": "天府大道一段",
+        "modal": "TCF-393",
+        "title": "违章拍照",
+        "brand": "佳能",
+        "type": "交通摄像头",
+        "description": "现在有{number}台佳能，主要用于测试主要用于测试主要用于测试主要用于测试主要用于测试"
+      },
+      {
+        "id": "6",
+        "location": "天府大道一段",
+        "modal": "TCF-393",
+        "title": "违章拍照",
+        "brand": "佳能",
+        "type": "交通摄像头",
+        "description": "现在有{number}台佳能，主要用于测试主要用于测试主要用于测试主要用于测试主要用于测试"
+      },
+      {
+        "id": "7",
+        "location": "天府大道一段",
+        "modal": "TCF-393",
+        "title": "违章拍照",
+        "brand": "佳能",
+        "type": "交通摄像头",
+        "description": "现在有{number}台佳能，主要用于测试主要用于测试主要用于测试主要用于测试主要用于测试"
+      },
+      {
+        "id": "8",
+        "location": "天府大道一段",
+        "modal": "TCF-393",
+        "title": "违章拍照",
+        "brand": "佳能",
+        "type": "交通摄像头",
+        "description": "现在有{number}台佳能，主要用于测试主要用于测试主要用于测试主要用于测试主要用于测试"
+      },
+      {
+        "id": "9",
+        "location": "天府大道一段",
+        "modal": "TCF-393",
+        "title": "违章拍照",
+        "brand": "佳能",
+        "type": "交通摄像头",
+        "description": "现在有{number}台佳能，主要用于测试主要用于测试主要用于测试主要用于测试主要用于测试"
+      },
+      {
+        "id": "10",
+        "location": "天府大道一段",
+        "modal": "TCF-393",
+        "title": "违章拍照",
+        "brand": "佳能",
+        "type": "交通摄像头",
+        "description": "现在有{number}台佳能，主要用于测试主要用于测试主要用于测试主要用于测试主要用于测试"
+      },
+      {
+        "id": "11",
+        "location": "天府大道一段",
+        "modal": "TCF-393",
+        "title": "违章拍照",
+        "brand": "佳能",
+        "type": "交通摄像头",
+        "description": "现在有{number}台佳能，主要用于测试主要用于测试主要用于测试主要用于测试主要用于测试"
+      }
+    ]
+  }
+}
