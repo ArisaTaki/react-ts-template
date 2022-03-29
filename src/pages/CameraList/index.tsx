@@ -6,6 +6,7 @@ import {
 } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import { ColumnsType } from 'antd/es/table';
+import { TableRowSelection } from 'antd/lib/table/interface';
 import styles from './styles.module.scss';
 import { moveToSystemError404Page } from '@/helpers/history';
 import { ServicesApi } from '@/services/services-api';
@@ -71,11 +72,14 @@ const CameraList: React.FC = () => {
     },
   ];
 
-  const rowSelection = {
-    onChange: (selectedRowKeys: React.Key[], selectedRows: CameraInfo[]) => {
-      setChooseArr(selectedRows);
-      setChooseIndex(selectedRowKeys);
-    },
+  const onSelectChange = (selectedRowKeys: React.Key[], selectedRows: CameraInfo[]) => {
+    setChooseArr(selectedRows);
+    setChooseIndex(selectedRowKeys);
+  };
+
+  const rowSelection: TableRowSelection<any> = {
+    onChange: onSelectChange,
+    selectedRowKeys: chooseIndex,
   };
 
   const getDelApiParams = (data: CameraInfo[]): Pick<CameraInfo, 'id'>[] => data.map((item) => {
@@ -93,6 +97,7 @@ const CameraList: React.FC = () => {
     setDelConfirmFlag(false);
     setLoading(true);
     delCameraList({ list: getDelApiParams(chooseArr) }).then((res) => {
+      onSelectChange([], []);
       getCameraListMethod();
     }).catch((err) => {
       setDelConfirmFlag(false);
