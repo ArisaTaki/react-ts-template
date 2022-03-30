@@ -37,17 +37,14 @@ const EquipmentEdit: React.FC = () => {
 
   return (
     <Spin spinning={pageLoading} indicator={loadingIcon()}>
-      <>
-        <div>种类编辑</div>
-        {brandInfo ? (
-          <EquipmentAddOrEdit
-            initData={brandInfo}
-            apiImgUrl={imgUrl}
-            isEdit
-            brandId={brandId}
-          />
-        ) : null}
-      </>
+      {brandInfo ? (
+        <EquipmentAddOrEdit
+          initData={brandInfo}
+          apiImgUrl={imgUrl}
+          isEdit
+          brandId={brandId}
+        />
+      ) : null}
     </Spin>
   );
 };

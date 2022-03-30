@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import classNames from 'classnames/bind';
 import {
-  Button, Form, Input, message, Progress, Spin, Upload,
+  Button, Form, Input, message, PageHeader, Progress, Spin, Upload,
 } from 'antd';
 import ImgCrop from 'antd-img-crop';
-import { useHistory } from 'react-router-dom';
 import { RcFile } from 'antd/es/upload/interface';
 import { PlusOutlined } from '@ant-design/icons';
+import history from '@/utils/getHistory';
 import styles from './styles.module.scss';
 import routerPath from '@/router/router-path';
 import { ServicesApi } from '@/services/services-api';
@@ -42,8 +42,6 @@ const EquipmentAddOrEdit: React.FC<EquipmentAddOrEditProps> = ({
   brandId,
   isEdit,
 }) => {
-  const history = useHistory();
-
   const [pending, setPending] = useState(false);
   const [uploadFile, setUploadFile] = useState<IUploadType>({
     fileList: [],
@@ -129,6 +127,12 @@ const EquipmentAddOrEdit: React.FC<EquipmentAddOrEditProps> = ({
 
   return (
     <Spin spinning={pending} tip="loading...">
+      <PageHeader
+        title={`种类${isEdit ? '编辑' : '新增'}`}
+        onBack={() => {
+          history.goBack();
+        }}
+      />
       <Form initialValues={initData} {...layout} name="nest-messages" onFinish={onFinish} validateMessages={validateMessages}>
         <Form.Item name={['brandInfo', 'brand']} label="品牌" rules={[{ required: true }]}>
           <Input />

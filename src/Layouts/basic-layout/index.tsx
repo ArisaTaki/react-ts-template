@@ -13,7 +13,8 @@ import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
 } from '@ant-design/icons';
-import { useHistory, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import history from '@/utils/getHistory';
 import styles from './styles.module.scss';
 import {
   deleteUser, deleteUserInfo, getUserInfoStore,
@@ -32,7 +33,6 @@ export interface BasicLayoutProps {
 }
 
 const BasicLayout: React.FC<BasicLayoutProps> = ({ children }) => {
-  const history = useHistory();
   const [userInfo, setUserInfo] = useState<UserInfo>();
   const [collapsed, setCollapsed] = useState<boolean>(false);
 

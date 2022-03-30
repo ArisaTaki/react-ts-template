@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
-import { useHistory } from 'react-router-dom';
 import {
   Button, Modal, Spin, Table,
 } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import { ColumnsType } from 'antd/es/table';
 import { TableRowSelection } from 'antd/lib/table/interface';
+import history from '@/utils/getHistory';
 import styles from './styles.module.scss';
 import { moveToSystemError404Page } from '@/helpers/history';
 import { ServicesApi } from '@/services/services-api';
@@ -24,13 +24,15 @@ const CameraList: React.FC = () => {
   const [delConfirmFlag, setDelConfirmFlag] = useState(false);
   const [chooseArr, setChooseArr] = useState<CameraInfo[]>([]);
   const [chooseIndex, setChooseIndex] = useState<React.Key[]>([]);
-  const history = useHistory();
+  // bad code
+  const [brandName, setBrandName] = useState('');
 
   const getCameraListMethod = () => {
     getCameraList({ brandId: history.location.state as string })
       .then((res) => {
         setLoading(false);
         setCameraList(res.data.cameraList);
+        setBrandName(res.data.cameraList[0].brand);
       }).catch((err) => {
         setLoading(false);
       });
@@ -47,7 +49,7 @@ const CameraList: React.FC = () => {
 
   const columns: ColumnsType<CameraInfo> = [
     {
-      title: '编号',
+      title: '设备编号',
       dataIndex: 'id',
       key: 'id',
     },
@@ -134,7 +136,14 @@ const CameraList: React.FC = () => {
       </Modal>
       <Spin spinning={pageLoading} indicator={loadingIcon()}>
         <div className={cx('buttons')}>
-          <Button type="primary" onClick={() => { history.push(routerPath.CameraAdd); }}>新增</Button>
+          <Button
+            type="primary"
+            onClick={() => {
+              history.push(routerPath.CameraAdd, brandName);
+            }}
+          >
+            新增
+          </Button>
           <Button
             type="default"
             danger

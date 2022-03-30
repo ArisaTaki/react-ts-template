@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import classNames from 'classnames/bind';
 import { Card, Drawer } from 'antd';
 import { EditOutlined, UnorderedListOutlined } from '@ant-design/icons';
-import { useHistory } from 'react-router-dom';
+import history from '@/utils/getHistory';
 import styles from './styles.module.scss';
 import { CameraBrand } from '@/services/entities';
 import routerPath from '@/router/router-path';
@@ -17,7 +17,6 @@ const { Meta } = Card;
 
 const CardItem: React.FC<CardProps> = ({ item }: CardProps) => {
   const [showAllDescription, setShowAllDescription] = useState<boolean>(false);
-  const history = useHistory();
 
   const {
     description, brand, imageUrl, brandId,
