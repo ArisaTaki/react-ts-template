@@ -42,12 +42,10 @@ app.use((req, res) => {
         } else {
             if (responseFilePath.indexOf('.json') >= 0) {
                 const mockJsonData = JSON.parse(fs.readFileSync(responseFilePath, 'utf-8'));
-                if (mockJsonData.error) {
-                    res.status(mockJsonData.status).json({
-                        ...mockJsonData
-                    })
-                    return;
-                }
+                res.status(mockJsonData.code).json({
+                    ...mockJsonData
+                })
+                return;
                 // console.log(mockJsonData)
                 res.writeHead(200, {
                     'Content-Type': 'application/json; charset=UTF-8',

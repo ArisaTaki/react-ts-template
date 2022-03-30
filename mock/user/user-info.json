@@ -1,8 +1,6 @@
 {
-  "status": 200,
-  "error": false,
   "message": "",
-  "code": "0",
+  "code": "200",
   "data": {
     "avatar": "",
     "name": "Elaina",
