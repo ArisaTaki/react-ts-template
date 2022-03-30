@@ -10,6 +10,9 @@ interface CameraAddOrEditProps {
 
 const CameraAddOrEdit: React.FC<CameraAddOrEditProps> = ({ isEdit }) => {
   console.log(isEdit);
+  const renderForm = () => {
+
+  };
   return (
     <div className={cx('syt')}>{isEdit ? '变更' : '新增'}</div>
   );

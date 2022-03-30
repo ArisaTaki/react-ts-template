@@ -24,8 +24,6 @@ const CameraList: React.FC = () => {
   const [delConfirmFlag, setDelConfirmFlag] = useState(false);
   const [chooseArr, setChooseArr] = useState<CameraInfo[]>([]);
   const [chooseIndex, setChooseIndex] = useState<React.Key[]>([]);
-  const [isEdit, setIsEdit] = useState(false);
-  const [operateFlag, setOperateFlag] = useState(false);
   const history = useHistory();
 
   const getCameraListMethod = () => {
@@ -80,23 +78,15 @@ const CameraList: React.FC = () => {
       render: (text, item) => (
         <Button
           type="default"
-          onClick={() => { showEditModal(item); }}
+          onClick={() => {
+            history.push(routerPath.CameraEdit, { id: item.id });
+          }}
         >
           编辑
         </Button>
       ),
     },
   ];
-
-  const showAddModal = () => {
-    setOperateFlag(true);
-    setIsEdit(false);
-  };
-
-  const showEditModal = (item: CameraInfo) => {
-    setOperateFlag(true);
-    setIsEdit(true);
-  };
 
   const onSelectChange = (selectedRowKeys: React.Key[], selectedRows: CameraInfo[]) => {
     setChooseArr(selectedRows);
@@ -142,16 +132,9 @@ const CameraList: React.FC = () => {
         {chooseIndex.sort((a, b) => Number(a) - Number(b)).join(',')}
         的设备吗？
       </Modal>
-      <Modal
-        visible={operateFlag}
-        title={`设备${isEdit ? '编辑' : '新增'}`}
-        onCancel={() => setOperateFlag(false)}
-      >
-        <CameraAddOrEdit isEdit={isEdit} />
-      </Modal>
       <Spin spinning={pageLoading} indicator={loadingIcon()}>
         <div className={cx('buttons')}>
-          <Button type="primary" onClick={showAddModal}>新增</Button>
+          <Button type="primary" onClick={() => { history.push(routerPath.CameraAdd); }}>新增</Button>
           <Button
             type="default"
             danger

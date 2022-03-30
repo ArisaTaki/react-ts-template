@@ -10,6 +10,8 @@ const routerPath = {
   EquipmentAdd: '/equipment/add',
   EquipmentEdit: '/equipment/edit/:brandId',
   CameraList: '/cameras',
+  CameraAdd: '/cameras/add',
+  CameraEdit: '/cameras/edit',
 };
 
 export default routerPath;

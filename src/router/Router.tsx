@@ -2,7 +2,6 @@ import React from 'react';
 import {
   Router as BaseRouter, Switch, Route,
 } from 'react-router-dom';
-import { createBrowserHistory } from 'history';
 import routerPath from '@/router/router-path';
 import Equipment from '@/pages/Equipment';
 import User from '@/pages/User';
@@ -17,6 +16,8 @@ import EquipmentEdit from '@/pages/EquipmentEdit';
 import CameraList from '@/pages/CameraList';
 import NoAuth from '@/pages/NoAuth';
 import history from '@/utils/getHistory';
+import CameraEdit from '@/pages/CameraEdit';
+import CameraAdd from '@/pages/CameraAdd';
 
 const Router: React.FC = () => (
   <BaseRouter history={history}>
@@ -29,6 +30,8 @@ const Router: React.FC = () => (
       <NeedLoginRoute path={routerPath.EquipmentAdd} exact component={EquipmentAdd} />
       <NeedLoginRoute path={routerPath.EquipmentEdit} exact component={EquipmentEdit} />
       <NeedLoginRoute path={routerPath.CameraList} exact component={CameraList} />
+      <NeedLoginRoute path={routerPath.CameraEdit} exact component={CameraEdit} />
+      <NeedLoginRoute path={routerPath.CameraAdd} exact component={CameraAdd} />
       <Route path={routerPath.NoAuth} exact component={NoAuth} />
       <Route path="*" exact component={NotFind} />
     </Switch>
