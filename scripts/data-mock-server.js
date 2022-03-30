@@ -45,7 +45,6 @@ app.use((req, res) => {
                 res.status(mockJsonData.code).json({
                     ...mockJsonData
                 })
-                return;
                 // console.log(mockJsonData)
                 res.writeHead(200, {
                     'Content-Type': 'application/json; charset=UTF-8',
