@@ -40,7 +40,7 @@ const CameraList: React.FC = () => {
 
   useEffect(() => {
     if (!history.location.state) {
-      moveToSystemError404Page(history, true);
+      moveToSystemError404Page(true);
     } else {
       setLoading(true);
       getCameraListMethod();

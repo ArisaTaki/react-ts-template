@@ -1,6 +1,7 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import { mockApiPath, onlineApiPath } from '@/constant/constants';
 import { getToken, getUser } from '@/utils/storageUtils';
+import { moveToSystemError403Page } from '@/helpers/history';
 
 if (process.env.NODE_ENV === 'development') {
   axios.defaults.baseURL = mockApiPath;
@@ -36,6 +37,11 @@ instance.interceptors.response.use(
       return Promise.reject(error);
     }
     const res = error.response.data;
+    // 处理403
+    if (res.code === '403') {
+      moveToSystemError403Page(true);
+      return Promise.reject(res);
+    }
     return Promise.reject(res);
   },
 );
