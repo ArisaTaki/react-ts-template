@@ -34,8 +34,9 @@ const Login: React.FC = () => {
         }).catch(() => {});
       }).catch((err) => {
         // TODO login error events
-        message.error('something going wrong');
-        console.log(err);
+        if (err) {
+          message.error(err.message);
+        }
       });
     } catch (err) {
       message.warning('账号和密码不能为空');
