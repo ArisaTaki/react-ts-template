@@ -17,16 +17,14 @@ const CameraEdit: React.FC = () => {
   const [cameraInfo, setCameraInfo] = useState<CameraInfo>();
 
   useEffect(() => {
-    setLoading(true);
     if (!history.location.state) {
-      setLoading(false);
       moveToSystemError404Page(true);
     } else {
+      setLoading(true);
       const id = history.location.state as string;
-      console.log(id);
       getCameraInfo({ id }).then((res) => {
         setLoading(false);
-        console.log(res);
+        setCameraInfo(res.data.cameraInfo);
       }).catch((err) => {
         setLoading(false);
       });
@@ -37,7 +35,7 @@ const CameraEdit: React.FC = () => {
 
   return (
     <Spin indicator={loadingIcon()} spinning={loading}>
-      <CameraAddOrEdit isEdit initData={cameraInfo} />
+      {cameraInfo ? <CameraAddOrEdit isEdit initData={cameraInfo} /> : null}
     </Spin>
   );
 };

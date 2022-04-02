@@ -55,12 +55,12 @@ const CameraAddOrEdit: React.FC<CameraAddOrEditProps> = ({ isEdit, brand, initDa
       />
       <Form {...layout} initialValues={isEdit ? initData : initAddData} name="nest-messages" onFinish={onFinish} validateMessages={validateMessages}>
         <Form.Item name="brand" label="品牌" rules={[{ required: true }]}>
+          <Input disabled />
+        </Form.Item>
+        <Form.Item name="location" label="位置">
           <Input />
         </Form.Item>
-        <Form.Item name="location" label="位置" rules={[{ type: 'email' }]}>
-          <Input />
-        </Form.Item>
-        <Form.Item name="modal" label="型号" rules={[{ type: 'number', min: 0, max: 99 }]}>
+        <Form.Item name="modal" label="型号">
           <Input />
         </Form.Item>
         <Form.Item name="title" label="标题">
