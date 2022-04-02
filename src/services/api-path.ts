@@ -11,4 +11,5 @@ export const ApiPaths = {
   getCameraList: '/camera-list/:brandId',
   delCameraList: '/camera-list/del',
   getCameraInfo: '/camera/details/:id',
+  updateCameraInfo: '/camera',
 };

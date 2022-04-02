@@ -48,4 +48,7 @@ export const ServicesApi = {
 
   getCameraInfo: (params: ApiData.GetCameraInfo.Params):
   Promise<ApiData.GetCameraInfo.ResponseData> => get(ApiPaths.getCameraInfo.replace(':id', params.id)),
+
+  updateCameraInfo: (params: ApiData.UpdateCameraInfo.Params):
+  Promise<ApiData.UpdateCameraInfo.Response> => post(ApiPaths.updateCameraInfo, params),
 };
