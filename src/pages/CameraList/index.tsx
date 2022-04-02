@@ -12,7 +12,6 @@ import { moveToSystemError404Page } from '@/helpers/history';
 import { ServicesApi } from '@/services/services-api';
 import { CameraInfo } from '@/services/entities';
 import routerPath from '@/router/router-path';
-import CameraAddOrEdit from '@/pages/CameraList/components/CameraAddOrEdit';
 
 const cx = classNames.bind(styles);
 
@@ -81,7 +80,7 @@ const CameraList: React.FC = () => {
         <Button
           type="default"
           onClick={() => {
-            history.push(routerPath.CameraEdit, { id: item.id });
+            history.push(routerPath.CameraEdit, item.id);
           }}
         >
           编辑

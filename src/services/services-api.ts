@@ -45,4 +45,7 @@ export const ServicesApi = {
 
   delCameraList: (params: ApiData.DelCameraList.Params):
   Promise<ApiData.DelCameraList.Response> => del(ApiPaths.delCameraList, params),
+
+  getCameraInfo: (params: ApiData.GetCameraInfo.Params):
+  Promise<ApiData.GetCameraInfo.ResponseData> => get(ApiPaths.getCameraInfo.replace(':id', params.id)),
 };

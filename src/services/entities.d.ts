@@ -167,4 +167,16 @@ export namespace ApiData {
     }
     type Response = BaseResponse;
   }
+
+  // 获取单个设备的详细信息
+  namespace GetCameraInfo {
+    interface Params {
+      id: string
+    }
+
+    interface ResponseData extends BaseResponse<ResponseData> {
+      cameraInfo: CameraInfo
+    }
+    type Response = BaseResponse<ResponseData>;
+  }
 }

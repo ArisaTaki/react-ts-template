@@ -10,7 +10,7 @@ const port = 3911;
 const app = express();
 
 // 需要进行匹配路由带有参数的mock路径
-const dynamicRouteRegexes = [/^\/brand\/(\w+)$/i, /^\/camera-list\/(\w+)$/i]
+const dynamicRouteRegexes = [/^\/brand\/(\w+)$/i, /^\/camera-list\/(\w+)$/i, /^\/camera\/(\w+)$/i]
 
 // 忽视的特定路径
 const shouldNotMatchDynamicRoutes = ['/brand/add', '/camera-list/del']
@@ -42,9 +42,12 @@ app.use((req, res) => {
         } else {
             if (responseFilePath.indexOf('.json') >= 0) {
                 const mockJsonData = JSON.parse(fs.readFileSync(responseFilePath, 'utf-8'));
-                res.status(mockJsonData.code).json({
-                    ...mockJsonData
-                })
+                if (mockJsonData.code) {
+                    res.status(mockJsonData.code).json({
+                        ...mockJsonData
+                    })
+                    return;
+                }
                 // console.log(mockJsonData)
                 res.writeHead(200, {
                     'Content-Type': 'application/json; charset=UTF-8',
