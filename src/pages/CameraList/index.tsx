@@ -51,6 +51,7 @@ const CameraList: React.FC = () => {
       title: '设备编号',
       dataIndex: 'id',
       key: 'id',
+      sorter: true,
     },
     {
       title: '位置',
@@ -153,7 +154,18 @@ const CameraList: React.FC = () => {
             删除
           </Button>
         </div>
-        <Table columns={columns} dataSource={cameraList} rowKey="id" rowSelection={rowSelection} />
+        <Table
+          columns={columns}
+          dataSource={cameraList}
+          rowKey="id"
+          rowSelection={rowSelection}
+          onChange={(pagination, filters, sorter, extra) => {
+            console.log(pagination);
+            console.log(filters);
+            console.log(extra);
+            console.log(sorter);
+          }}
+        />
       </Spin>
     </>
   );

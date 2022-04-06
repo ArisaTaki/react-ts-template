@@ -54,4 +54,7 @@ export const ServicesApi = {
 
   addCameraInfo: (params: ApiData.AddCameraInfo.Params):
   Promise<ApiData.AddCameraInfo.Response> => put(ApiPaths.addCameraInfo, params),
+
+  searchCameras: (params: ApiData.SearchCameraInfos.Params):
+  Promise<ApiData.SearchCameraInfos.Response> => post(ApiPaths.searchCameras, params),
 };

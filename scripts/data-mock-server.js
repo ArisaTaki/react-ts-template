@@ -25,14 +25,12 @@ app.use(express.json({ limit: '150mb' }))
 
 app.use((req, res) => {
     let { path, url, query, method } = req
-    console.log(path)
     if (!shouldNotMatchDynamicRoutes.includes(path)) {
         for (let i = 0; i < dynamicRouteRegexes.length; i++) {
             const matchRes = path.match(dynamicRouteRegexes[i]);
             if (matchRes) {
                 // replace the dynamic params to 1, use the 1.json data
                 path = path.replace(matchRes[1], '1')
-                console.log(path)
                 break;
             }
         }
