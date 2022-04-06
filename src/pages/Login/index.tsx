@@ -3,9 +3,9 @@ import {
   Button, Form, Input,
   FormInstance, message,
 } from 'antd';
-import { useHistory } from 'react-router-dom';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import classNames from 'classnames/bind';
+import history from '@/utils/getHistory';
 import styles from './style.module.scss';
 import routerPath from '@/router/router-path';
 import { ServicesApi } from '@/services/services-api';
@@ -14,8 +14,6 @@ import { saveUser, saveUserInfo } from '@/utils/storageUtils';
 const cx = classNames.bind(styles);
 
 const Login: React.FC = () => {
-  const history = useHistory();
-
   const { login, getUserInfo } = ServicesApi;
   const [form] = Form.useForm();
   const formRef = createRef<FormInstance>();

@@ -10,22 +10,29 @@ const port = 3911;
 const app = express();
 
 // 需要进行匹配路由带有参数的mock路径
-const dynamicRouteRegexes = [/^\/brand\/(\w+)$/i]
+const dynamicRouteRegexes = [
+    /^\/brand\/(\w+)$/i,
+    /^\/camera-list\/(\w+)$/i,
+    /^\/camera\/(\w+)$/i,
+    /^\/camera\/details\/(\w+)$/i
+]
 
 // 忽视的特定路径
-const shouldNotMatchDynamicRoutes = ['/brand/add']
+const shouldNotMatchDynamicRoutes = ['/brand/add', '/camera-list/del']
 
 app.use(cors());
 app.use(express.json({ limit: '150mb' }))
 
 app.use((req, res) => {
     let { path, url, query, method } = req
+    console.log(path)
     if (!shouldNotMatchDynamicRoutes.includes(path)) {
         for (let i = 0; i < dynamicRouteRegexes.length; i++) {
             const matchRes = path.match(dynamicRouteRegexes[i]);
             if (matchRes) {
                 // replace the dynamic params to 1, use the 1.json data
                 path = path.replace(matchRes[1], '1')
+                console.log(path)
                 break;
             }
         }
@@ -42,10 +49,12 @@ app.use((req, res) => {
         } else {
             if (responseFilePath.indexOf('.json') >= 0) {
                 const mockJsonData = JSON.parse(fs.readFileSync(responseFilePath, 'utf-8'));
-                res.status(mockJsonData.code).json({
-                    ...mockJsonData
-                })
-                return;
+                if (mockJsonData.code) {
+                    res.status(mockJsonData.code).json({
+                        ...mockJsonData
+                    })
+                    return;
+                }
                 // console.log(mockJsonData)
                 res.writeHead(200, {
                     'Content-Type': 'application/json; charset=UTF-8',

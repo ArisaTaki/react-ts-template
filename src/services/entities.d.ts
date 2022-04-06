@@ -35,9 +35,9 @@ export interface CameraInfo {
   // 备注
   description: string;
   // 网卡信息
-  ethernetCards: EthernetCardVO[];
+  ethernetCards?: EthernetCardVO[];
   // 设备ID
-  id: number;
+  id?: string;
   // 设备安装位置
   location: string;
   // 设备型号
@@ -141,6 +141,58 @@ export namespace ApiData {
       description?: string;
       // 图片路径
       imgUrl: string;
+    }
+
+    type Response = BaseResponse;
+  }
+
+  // 获得某个类型下的设备列表
+  namespace GetCameraListByBrand {
+    interface Params {
+      brandId: string
+    }
+
+    interface ResponseData extends BaseResponse<ResponseData> {
+      cameraList: CameraInfo[]
+    }
+    type Response = BaseResponse<ResponseData>;
+  }
+
+  // 删除设备数据组
+  namespace DelCameraList {
+    interface Params {
+      list: {
+        id?: string
+      }[]
+    }
+    type Response = BaseResponse;
+  }
+
+  // 获取单个设备的详细信息
+  namespace GetCameraInfo {
+    interface Params {
+      id: string
+    }
+
+    interface ResponseData extends BaseResponse<ResponseData> {
+      cameraInfo: CameraInfo
+    }
+    type Response = BaseResponse<ResponseData>;
+  }
+
+  // 更新单个设备的详细信息
+  namespace UpdateCameraInfo {
+    interface Params {
+      cameraInfo: CameraInfo
+    }
+
+    type Response = BaseResponse;
+  }
+
+  // 新增单个设备的详细信息
+  namespace AddCameraInfo {
+    interface Params {
+      cameraInfo: CameraInfo
     }
 
     type Response = BaseResponse;
