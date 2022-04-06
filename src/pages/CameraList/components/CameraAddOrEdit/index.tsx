@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import classNames from 'classnames/bind';
 import {
-  Button, Form, Input, PageHeader,
+  Button, Form, Input, PageHeader, Spin,
 } from 'antd';
 import styles from './style.module.scss';
 import history from '@/utils/getHistory';
 import { CameraInfo } from '@/services/entities';
+import { ServicesApi } from '@/services/services-api';
+import routerPath from '@/router/router-path';
 
 const cx = classNames.bind(styles);
 
@@ -32,7 +34,11 @@ const validateMessages = {
   },
 };
 
+const { updateCameraInfo, addCameraInfo } = ServicesApi;
+
 const CameraAddOrEdit: React.FC<CameraAddOrEditProps> = ({ isEdit, brand, initData }) => {
+  const [pending, setPending] = useState(false);
+
   const initAddData: CameraInfo = {
     brand: brand!,
     description: '',
@@ -41,13 +47,33 @@ const CameraAddOrEdit: React.FC<CameraAddOrEditProps> = ({ isEdit, brand, initDa
     type: '',
     location: '',
   };
+
+  const goToListPage = () => {
+    history.goBack();
+  };
+
   /* eslint-enable no-template-curly-in-string */
   const onFinish = (values: any) => {
-    console.log(values);
+    setPending(true);
+    if (isEdit) {
+      updateCameraInfo({ cameraInfo: values }).then((res) => {
+        setPending(false);
+        goToListPage();
+      }).catch((err) => {
+      // TODO
+      });
+    } else {
+      addCameraInfo({ cameraInfo: values }).then((res) => {
+        setPending(false);
+        goToListPage();
+      }).catch((err) => {
+      // TODO
+      });
+    }
   };
 
   return (
-    <>
+    <Spin spinning={pending} tip="loading...">
       <PageHeader
         onBack={() => { history.goBack(); }}
         className={cx('header')}
@@ -78,7 +104,7 @@ const CameraAddOrEdit: React.FC<CameraAddOrEditProps> = ({ isEdit, brand, initDa
           </Button>
         </Form.Item>
       </Form>
-    </>
+    </Spin>
   );
 };
 

@@ -35,7 +35,14 @@ const CameraEdit: React.FC = () => {
 
   return (
     <Spin indicator={loadingIcon()} spinning={loading}>
-      {cameraInfo ? <CameraAddOrEdit isEdit initData={cameraInfo} /> : null}
+      {cameraInfo
+        ? (
+          <CameraAddOrEdit
+            isEdit
+            initData={cameraInfo}
+          />
+        )
+        : null}
     </Spin>
   );
 };

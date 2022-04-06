@@ -51,4 +51,7 @@ export const ServicesApi = {
 
   updateCameraInfo: (params: ApiData.UpdateCameraInfo.Params):
   Promise<ApiData.UpdateCameraInfo.Response> => post(ApiPaths.updateCameraInfo, params),
+
+  addCameraInfo: (params: ApiData.AddCameraInfo.Params):
+  Promise<ApiData.AddCameraInfo.Response> => put(ApiPaths.addCameraInfo, params),
 };
