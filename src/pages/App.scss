@@ -1,0 +1,15 @@
+@import '~antd/dist/antd.css';
+.g-react-renderer-content-root {
+  background: #ffffff;
+  padding: 40px 32px 120px;
+
+  ul,
+  li {
+    list-style-type: none;
+  }
+
+  pre {
+    font-family: inherit;
+    margin: 0;
+  }
+}

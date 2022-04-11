@@ -1,0 +1,27 @@
+.content {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+
+  .main {
+    width: 480px;
+    padding: 20px;
+    margin: 0 auto;
+  }
+
+  .buttons {
+    display: flex;
+    justify-content: center;
+
+    .login {
+      width: 120px;
+      margin-right: 20px;
+    }
+
+    .register {
+      width: 120px;
+      margin-left: 20px;
+    }
+  }
+}
