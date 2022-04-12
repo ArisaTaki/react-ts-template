@@ -18,7 +18,7 @@ const dynamicRouteRegexes = [
 ]
 
 // 忽视的特定路径
-const shouldNotMatchDynamicRoutes = ['/brand/add', '/camera-list/del']
+const shouldNotMatchDynamicRoutes = ['/brand/add', '/camera-list/del', '/camera/search']
 
 app.use(cors());
 app.use(express.json({ limit: '150mb' }))
@@ -29,7 +29,7 @@ app.use((req, res) => {
         for (let i = 0; i < dynamicRouteRegexes.length; i++) {
             const matchRes = path.match(dynamicRouteRegexes[i]);
             if (matchRes) {
-                // replace the dynamic params to 1, use the 1.json data
+                // replace the dynamic params to 1, use the search.json data
                 path = path.replace(matchRes[1], '1')
                 break;
             }

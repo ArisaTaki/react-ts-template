@@ -39,7 +39,7 @@ const CardItem: React.FC<CardProps> = ({ item }: CardProps) => {
   };
 
   const goToCameraList = () => {
-    history.push(routerPath.CameraList, brandId);
+    history.push(routerPath.CameraList, brand);
   };
 
   return (

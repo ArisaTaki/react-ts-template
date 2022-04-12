@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import {
-  Button, Modal, Spin, Table,
+  Button, Modal, Pagination, Spin, Table,
 } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import { ColumnsType } from 'antd/es/table';
 import { TableRowSelection } from 'antd/lib/table/interface';
+import { PaginationConfig } from 'antd/es/pagination';
 import history from '@/utils/getHistory';
 import styles from './styles.module.scss';
 import { moveToSystemError404Page } from '@/helpers/history';
@@ -15,7 +16,13 @@ import routerPath from '@/router/router-path';
 
 const cx = classNames.bind(styles);
 
-const { getCameraList, delCameraList } = ServicesApi;
+const { searchCameras, delCameraList } = ServicesApi;
+
+interface PaginationProps {
+  pageSize: number,
+  current: number,
+  total?: number,
+}
 
 const CameraList: React.FC = () => {
   const [pageLoading, setLoading] = useState(false);
@@ -24,14 +31,19 @@ const CameraList: React.FC = () => {
   const [chooseArr, setChooseArr] = useState<CameraInfo[]>([]);
   const [chooseIndex, setChooseIndex] = useState<React.Key[]>([]);
   // bad code
-  const [brandName, setBrandName] = useState('');
+  const [brandName] = useState<string>(history.location.state as string);
+  const [paginationData, setPaginationData] = useState<PaginationProps>();
 
   const getCameraListMethod = () => {
-    getCameraList({ brandId: history.location.state as string })
+    searchCameras({ query: { condition: { brand: brandName } } })
       .then((res) => {
         setLoading(false);
-        setCameraList(res.data.cameraList);
-        setBrandName(res.data.cameraList[0].brand);
+        setCameraList(res.data.records);
+        setPaginationData({
+          pageSize: res.data.size,
+          current: res.data.index,
+          total: res.data.total,
+        });
       }).catch((err) => {
         setLoading(false);
       });
@@ -89,6 +101,15 @@ const CameraList: React.FC = () => {
       ),
     },
   ];
+
+  const paginationProps = {
+    showSizeChanger: true,
+    showQuickJumper: true,
+    showTotal: () => `共${paginationData?.total}条`,
+    pageSize: paginationData?.pageSize,
+    current: paginationData?.current,
+    total: paginationData?.total,
+  };
 
   const onSelectChange = (selectedRowKeys: React.Key[], selectedRows: CameraInfo[]) => {
     setChooseArr(selectedRows);
@@ -159,11 +180,20 @@ const CameraList: React.FC = () => {
           dataSource={cameraList}
           rowKey="id"
           rowSelection={rowSelection}
-          onChange={(pagination, filters, sorter, extra) => {
-            console.log(pagination);
-            console.log(filters);
-            console.log(extra);
-            console.log(sorter);
+          pagination={{
+            ...paginationProps,
+            onShowSizeChange: (current: number, size: number) => {
+              setLoading(true);
+              searchCameras({ query: { size, index: current, condition: { brand: brandName } } })
+                .then((res) => {
+                  setLoading(false);
+                  setCameraList(res.data.records);
+                  setPaginationData({ ...paginationData, current, pageSize: size });
+                });
+            },
+            onChange: (page: number, pageSize: number) => {
+              setPaginationData({ ...paginationData, current: page, pageSize });
+            },
           }}
         />
       </Spin>

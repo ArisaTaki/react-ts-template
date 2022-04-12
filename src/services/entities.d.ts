@@ -69,17 +69,17 @@ export interface BrandInfo {
 }
 
 export interface SearchCondition {
-  brand: string
-  location: string
-  modal: string
-  title: string
-  type: string
+  brand?: string
+  location?: string
+  modal?: string
+  title?: string
+  type?: string
 }
 
 export interface SearchInfo {
-  condition: SearchCondition
-  index: number
-  size: number
+  condition?: SearchCondition
+  index?: number
+  size?: number
 }
 
 export namespace ApiData {
@@ -218,6 +218,12 @@ export namespace ApiData {
       query: SearchInfo
     }
 
-    type Response = BaseResponse;
+    interface ResponseData extends BaseResponse<ResponseData> {
+      index: number
+      records: CameraInfo[]
+      size: number
+      total: number
+    }
+    type Response = BaseResponse<ResponseData>;
   }
 }
