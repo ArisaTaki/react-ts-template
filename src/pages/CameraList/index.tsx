@@ -176,14 +176,21 @@ const CameraList: React.FC = () => {
           </Button>
         </div>
         <Table
+          scroll={{ y: 485 }}
           columns={columns}
           dataSource={cameraList}
           rowKey="id"
           rowSelection={rowSelection}
+          onChange={(pagination, filters, sorter, extra) => {
+            if (extra.action === 'sort') {
+              console.log(2);
+            }
+          }}
           pagination={{
             ...paginationProps,
             onChange: (page: number, pageSize: number) => {
               setLoading(true);
+              setCameraList([]);
               searchCameras({
                 query:
                     { size: pageSize, index: page, condition: { brand: brandName } },
