@@ -47,11 +47,30 @@ app.use((req, res) => {
         } else {
             if (responseFilePath.indexOf('.json') >= 0) {
                 const mockJsonData = JSON.parse(fs.readFileSync(responseFilePath, 'utf-8'));
-                if (mockJsonData.code) {
-                    res.status(mockJsonData.code).json({
-                        ...mockJsonData
-                    })
-                    return;
+                if (path === '/camera/search') {
+                    console.log(mockJsonData)
+                    console.log(req.body.query)
+                    if (mockJsonData.code) {
+                        const index = req.body.query.index;
+                        const size = req.body.query.size;
+                        res.status(mockJsonData.code).json({
+                            ...mockJsonData,
+                            data: {
+                                ...mockJsonData.data,
+                                index,
+                                size,
+                                records: mockJsonData.data.records.slice((index - 1) * size, index * size)
+                            }
+                        })
+                        return;
+                    }
+                } else {
+                    if (mockJsonData.code) {
+                        res.status(mockJsonData.code).json({
+                            ...mockJsonData
+                        })
+                        return;
+                    }
                 }
                 // console.log(mockJsonData)
                 res.writeHead(200, {

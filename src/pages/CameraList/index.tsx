@@ -35,7 +35,7 @@ const CameraList: React.FC = () => {
   const [paginationData, setPaginationData] = useState<PaginationProps>();
 
   const getCameraListMethod = () => {
-    searchCameras({ query: { condition: { brand: brandName } } })
+    searchCameras({ query: { condition: { brand: brandName }, index: 1, size: 10 } })
       .then((res) => {
         setLoading(false);
         setCameraList(res.data.records);
@@ -182,17 +182,17 @@ const CameraList: React.FC = () => {
           rowSelection={rowSelection}
           pagination={{
             ...paginationProps,
-            onShowSizeChange: (current: number, size: number) => {
+            onChange: (page: number, pageSize: number) => {
               setLoading(true);
-              searchCameras({ query: { size, index: current, condition: { brand: brandName } } })
+              searchCameras({
+                query:
+                    { size: pageSize, index: page, condition: { brand: brandName } },
+              })
                 .then((res) => {
                   setLoading(false);
+                  setPaginationData({ ...paginationData, current: page, pageSize });
                   setCameraList(res.data.records);
-                  setPaginationData({ ...paginationData, current, pageSize: size });
                 });
-            },
-            onChange: (page: number, pageSize: number) => {
-              setPaginationData({ ...paginationData, current: page, pageSize });
             },
           }}
         />
