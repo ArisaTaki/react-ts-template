@@ -257,14 +257,7 @@ const CameraList: React.FC = () => {
         <div className={cx('search-part')}>
           {Object.keys(searchInfo).map((item, index) => {
             if (item === 'brand') {
-              return (
-                <Input
-                  value={searchInfo[`${item}`]}
-                  disabled
-                  className={cx(`search-${item}`)}
-                  key={index}
-                />
-              );
+              return;
             }
             return (
               <Input
