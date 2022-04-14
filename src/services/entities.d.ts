@@ -80,6 +80,7 @@ export interface SearchInfo {
   condition?: SearchCondition
   index?: number
   size?: number
+  sort?: string
 }
 
 export namespace ApiData {

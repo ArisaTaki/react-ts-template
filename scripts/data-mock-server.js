@@ -20,6 +20,18 @@ const dynamicRouteRegexes = [
 // 忽视的特定路径
 const shouldNotMatchDynamicRoutes = ['/brand/add', '/camera-list/del', '/camera/search']
 
+// 排序模拟
+const sortMock = (arr, sort) => {
+    console.log(sort)
+    if (!sort) {
+        return arr
+    } else if (sort === 'ascend') {
+        return arr.sort((a, b) => Number(a.id) - Number(b.id))
+    } else if (sort === 'descend') {
+        return arr.sort((a, b) => Number(b.id) - Number(a.id))
+    }
+}
+
 app.use(cors());
 app.use(express.json({ limit: '150mb' }))
 
@@ -53,13 +65,15 @@ app.use((req, res) => {
                     if (mockJsonData.code) {
                         const index = req.body.query.index;
                         const size = req.body.query.size;
+                        const sort = req.body.query.sort
                         res.status(mockJsonData.code).json({
                             ...mockJsonData,
                             data: {
                                 ...mockJsonData.data,
                                 index,
                                 size,
-                                records: mockJsonData.data.records.slice((index - 1) * size, index * size)
+                                records: sortMock(mockJsonData.data.records.
+                                slice((index - 1) * size, index * size), sort)
                             }
                         })
                         return;

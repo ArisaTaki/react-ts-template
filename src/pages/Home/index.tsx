@@ -4,9 +4,6 @@ import styles from './styles.module.scss';
 
 const cx = classNames.bind(styles);
 
-const Home: React.FC = () => {
-  console.log();
-  return <div>Home</div>;
-};
+const Home: React.FC = () => <div>Home</div>;
 
 export default Home;

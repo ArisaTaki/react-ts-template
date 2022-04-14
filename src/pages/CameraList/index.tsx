@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import {
-  Button, Modal, Pagination, Spin, Table,
+  Button, Modal, Spin, Table,
 } from 'antd';
-import { LoadingOutlined } from '@ant-design/icons';
+import { LoadingOutlined, SearchOutlined } from '@ant-design/icons';
 import { ColumnsType } from 'antd/es/table';
-import { TableRowSelection } from 'antd/lib/table/interface';
-import { PaginationConfig } from 'antd/es/pagination';
+import { SorterResult, TablePaginationConfig, TableRowSelection } from 'antd/lib/table/interface';
 import history from '@/utils/getHistory';
 import styles from './styles.module.scss';
 import { moveToSystemError404Page } from '@/helpers/history';
 import { ServicesApi } from '@/services/services-api';
 import { CameraInfo } from '@/services/entities';
 import routerPath from '@/router/router-path';
+import CameraAddOrEdit from '@/pages/CameraList/components/CameraAddOrEdit';
 
 const cx = classNames.bind(styles);
 
@@ -30,9 +30,10 @@ const CameraList: React.FC = () => {
   const [delConfirmFlag, setDelConfirmFlag] = useState(false);
   const [chooseArr, setChooseArr] = useState<CameraInfo[]>([]);
   const [chooseIndex, setChooseIndex] = useState<React.Key[]>([]);
+  const [paginationData, setPaginationData] = useState<PaginationProps>();
+  const [searchShowFlag, setSearchShowFlag] = useState(false);
   // bad code
   const [brandName] = useState<string>(history.location.state as string);
-  const [paginationData, setPaginationData] = useState<PaginationProps>();
 
   const getCameraListMethod = () => {
     searchCameras({ query: { condition: { brand: brandName }, index: 1, size: 10 } })
@@ -143,6 +144,55 @@ const CameraList: React.FC = () => {
     });
   };
 
+  const paginationChangeEvent = (page: number, pageSize: number, sort?: string) => {
+    setLoading(true);
+    setCameraList([]);
+    searchCameras({
+      query:
+              {
+                size: pageSize, index: page, condition: { brand: brandName }, sort,
+              },
+    })
+      .then((res) => {
+        setLoading(false);
+        setPaginationData({ ...paginationData, current: page, pageSize });
+        setCameraList(res.data.records);
+      }).catch((err) => {
+        // TODO
+      });
+  };
+
+  const sorterChangeEvent = (sort?: string) => {
+    searchCameras({
+      query:
+          {
+            sort: sort!,
+            size: paginationData?.pageSize,
+            index: paginationData?.current,
+            condition: { brand: brandName },
+          },
+    })
+      .then((res) => {
+        setLoading(false);
+        setCameraList(res.data.records);
+      }).catch((err) => {
+      // TODO
+      });
+  };
+
+  const switchActionChange = (action: string,
+    sort:SorterResult<CameraInfo>,
+    pagination:TablePaginationConfig) => {
+    if (action === 'sort') {
+      setLoading(true);
+      sorterChangeEvent(sort.order ?? undefined);
+    }
+    if (action === 'paginate') {
+      paginationChangeEvent(pagination.current ?? 1,
+        pagination.pageSize ?? 10, sort.order ?? undefined);
+    }
+  };
+
   return (
     <>
       <Modal
@@ -155,24 +205,42 @@ const CameraList: React.FC = () => {
         {chooseIndex.sort((a, b) => Number(a) - Number(b)).join(',')}
         的设备吗？
       </Modal>
+      <Modal
+        title="条件查询"
+        visible={searchShowFlag}
+        onCancel={() => setSearchShowFlag(false)}
+      >
+        1
+      </Modal>
       <Spin spinning={pageLoading} indicator={loadingIcon()}>
         <div className={cx('buttons')}>
+          <div>
+            <Button
+              type="primary"
+              onClick={() => {
+                history.push(routerPath.CameraAdd, brandName);
+              }}
+            >
+              新增
+            </Button>
+            <Button
+              type="default"
+              danger
+              className={cx('del')}
+              disabled={!chooseArr.length}
+              onClick={deleteItems}
+            >
+              删除
+            </Button>
+          </div>
           <Button
             type="primary"
+            icon={<SearchOutlined />}
             onClick={() => {
-              history.push(routerPath.CameraAdd, brandName);
+              setSearchShowFlag(true);
             }}
           >
-            新增
-          </Button>
-          <Button
-            type="default"
-            danger
-            className={cx('del')}
-            disabled={!chooseArr.length}
-            onClick={deleteItems}
-          >
-            删除
+            查询
           </Button>
         </div>
         <Table
@@ -182,25 +250,12 @@ const CameraList: React.FC = () => {
           rowKey="id"
           rowSelection={rowSelection}
           onChange={(pagination, filters, sorter, extra) => {
-            if (extra.action === 'sort') {
-              console.log(2);
-            }
+            sorter = sorter as SorterResult<CameraInfo>;
+            switchActionChange(extra.action, sorter, pagination);
           }}
+          showSorterTooltip={false}
           pagination={{
             ...paginationProps,
-            onChange: (page: number, pageSize: number) => {
-              setLoading(true);
-              setCameraList([]);
-              searchCameras({
-                query:
-                    { size: pageSize, index: page, condition: { brand: brandName } },
-              })
-                .then((res) => {
-                  setLoading(false);
-                  setPaginationData({ ...paginationData, current: page, pageSize });
-                  setCameraList(res.data.records);
-                });
-            },
           }}
         />
       </Spin>
