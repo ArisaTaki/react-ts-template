@@ -115,7 +115,8 @@ const EquipmentAddOrEdit: React.FC<EquipmentAddOrEditProps> = ({
 
   const checkFile = (file: RcFile | File): boolean => {
     if (fileTypeCases.filter((v) => file.type === v).length === 0) {
-      message.error('请传入正确的格式文件').then(() => false);
+      message.error('请传入正确的格式文件');
+      return false;
     }
     return true;
   };
