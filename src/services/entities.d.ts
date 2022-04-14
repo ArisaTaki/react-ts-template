@@ -68,6 +68,22 @@ export interface BrandInfo {
   imageUrl: string;
 }
 
+export interface SearchCondition {
+  brand?: string
+  location?: string
+  modal?: string
+  title?: string
+  type?: string
+  [key: string]: any
+}
+
+export interface SearchInfo {
+  condition?: SearchCondition
+  index?: number
+  size?: number
+  sort?: string
+}
+
 export namespace ApiData {
   // 用户登录信息
   namespace Login {
@@ -196,5 +212,20 @@ export namespace ApiData {
     }
 
     type Response = BaseResponse;
+  }
+
+  // 搜索设备信息
+  namespace SearchCameraInfos {
+    interface Params {
+      query: SearchInfo
+    }
+
+    interface ResponseData extends BaseResponse<ResponseData> {
+      index: number
+      records: CameraInfo[]
+      size: number
+      total: number
+    }
+    type Response = BaseResponse<ResponseData>;
   }
 }

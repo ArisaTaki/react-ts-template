@@ -40,9 +40,6 @@ export const ServicesApi = {
   Promise<ApiData.EditBrand.Response> => post(ApiPaths.EditBrand.replace(':brandId',
     params.brandId), params),
 
-  getCameraList: (params: ApiData.GetCameraListByBrand.Params):
-  Promise<ApiData.GetCameraListByBrand.ResponseData> => get(ApiPaths.getCameraList.replace(':brandId', params.brandId)),
-
   delCameraList: (params: ApiData.DelCameraList.Params):
   Promise<ApiData.DelCameraList.Response> => del(ApiPaths.delCameraList, params),
 
@@ -54,4 +51,7 @@ export const ServicesApi = {
 
   addCameraInfo: (params: ApiData.AddCameraInfo.Params):
   Promise<ApiData.AddCameraInfo.Response> => put(ApiPaths.addCameraInfo, params),
+
+  searchCameras: (params: ApiData.SearchCameraInfos.Params):
+  Promise<ApiData.SearchCameraInfos.ResponseData> => post(ApiPaths.searchCameras, params),
 };

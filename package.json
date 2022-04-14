@@ -44,6 +44,7 @@
     "history": "^4.9.0",
     "json-server": "^0.17.0",
     "node-sass": "^5.0.0",
+    "os": "^0.1.2",
     "prettier": "^2.2.1",
     "react": "^17.0.2",
     "react-app-rewire-hot-loader": "^2.0.1",
@@ -59,7 +60,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "concurrently \"react-app-rewired start\" \"node scripts/data-mock-server.js\"",
+    "start": "REACT_APP_USE_IP=true concurrently \"react-app-rewired start\" \"node scripts/data-mock-server.js\"",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject"

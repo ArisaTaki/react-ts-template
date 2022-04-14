@@ -8,9 +8,9 @@ export const ApiPaths = {
   addBrand: '/brand/add',
   EditBrand: '/brand/:brandId',
   getBrandInfo: '/brand/:brandId',
-  getCameraList: '/camera-list/:brandId',
   delCameraList: '/camera-list/del',
   getCameraInfo: '/camera/details/:id',
   updateCameraInfo: '/camera',
   addCameraInfo: '/camera',
+  searchCameras: '/camera/search',
 };
