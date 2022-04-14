@@ -74,6 +74,7 @@ export interface SearchCondition {
   modal?: string
   title?: string
   type?: string
+  [key: string]: any
 }
 
 export interface SearchInfo {

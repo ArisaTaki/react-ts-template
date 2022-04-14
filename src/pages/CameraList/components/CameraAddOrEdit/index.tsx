@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import classNames from 'classnames/bind';
 import {
-  Button, Form, Input, PageHeader, Spin,
+  Button, Form, Input, message, PageHeader, Spin,
 } from 'antd';
 import styles from './style.module.scss';
 import history from '@/utils/getHistory';
@@ -49,6 +49,7 @@ const CameraAddOrEdit: React.FC<CameraAddOrEditProps> = ({ isEdit, brand, initDa
   };
 
   const goToListPage = () => {
+    message.success(isEdit ? '修改成功' : '添加成功');
     history.goBack();
   };
 

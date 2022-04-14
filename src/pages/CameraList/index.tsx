@@ -1,18 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { ChangeEventHandler, useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import {
-  Button, Modal, Spin, Table,
+  Button, Input, Modal, PageHeader, Spin, Table,
 } from 'antd';
-import { LoadingOutlined, SearchOutlined } from '@ant-design/icons';
+import { DeleteFilled, LoadingOutlined, SearchOutlined } from '@ant-design/icons';
 import { ColumnsType } from 'antd/es/table';
-import { SorterResult, TablePaginationConfig, TableRowSelection } from 'antd/lib/table/interface';
+import {
+  SorterResult, TableAction, TablePaginationConfig, TableRowSelection,
+} from 'antd/lib/table/interface';
 import history from '@/utils/getHistory';
 import styles from './styles.module.scss';
 import { moveToSystemError404Page } from '@/helpers/history';
 import { ServicesApi } from '@/services/services-api';
-import { CameraInfo } from '@/services/entities';
+import { CameraInfo, SearchCondition } from '@/services/entities';
 import routerPath from '@/router/router-path';
-import CameraAddOrEdit from '@/pages/CameraList/components/CameraAddOrEdit';
 
 const cx = classNames.bind(styles);
 
@@ -24,6 +25,22 @@ interface PaginationProps {
   total?: number,
 }
 
+const SearchInfoMap: Record<string, string> = {
+  brand: '品牌',
+  location: '设备安装位置',
+  modal: '设备型号',
+  title: '视频标题',
+  type: '镜头分类',
+};
+
+const initSearchInfo = {
+  brand: '',
+  type: '',
+  title: '',
+  location: '',
+  modal: '',
+};
+
 const CameraList: React.FC = () => {
   const [pageLoading, setLoading] = useState(false);
   const [cameraList, setCameraList] = useState<CameraInfo[]>([]);
@@ -31,7 +48,8 @@ const CameraList: React.FC = () => {
   const [chooseArr, setChooseArr] = useState<CameraInfo[]>([]);
   const [chooseIndex, setChooseIndex] = useState<React.Key[]>([]);
   const [paginationData, setPaginationData] = useState<PaginationProps>();
-  const [searchShowFlag, setSearchShowFlag] = useState(false);
+  const [sorterOrder, setSortOrder] = useState<string | undefined>();
+  const [searchInfo, setSearchInfo] = useState<SearchCondition>(initSearchInfo);
   // bad code
   const [brandName] = useState<string>(history.location.state as string);
 
@@ -54,6 +72,7 @@ const CameraList: React.FC = () => {
     if (!history.location.state) {
       moveToSystemError404Page(true);
     } else {
+      setSearchInfo({ ...searchInfo, brand: brandName });
       setLoading(true);
       getCameraListMethod();
     }
@@ -150,7 +169,7 @@ const CameraList: React.FC = () => {
     searchCameras({
       query:
               {
-                size: pageSize, index: page, condition: { brand: brandName }, sort,
+                size: pageSize, index: page, condition: searchInfo, sort,
               },
     })
       .then((res) => {
@@ -169,7 +188,7 @@ const CameraList: React.FC = () => {
             sort: sort!,
             size: paginationData?.pageSize,
             index: paginationData?.current,
-            condition: { brand: brandName },
+            condition: searchInfo,
           },
     })
       .then((res) => {
@@ -180,11 +199,12 @@ const CameraList: React.FC = () => {
       });
   };
 
-  const switchActionChange = (action: string,
+  const switchActionChange = (action: TableAction,
     sort:SorterResult<CameraInfo>,
     pagination:TablePaginationConfig) => {
     if (action === 'sort') {
       setLoading(true);
+      setSortOrder(sort.order ?? undefined);
       sorterChangeEvent(sort.order ?? undefined);
     }
     if (action === 'paginate') {
@@ -193,8 +213,71 @@ const CameraList: React.FC = () => {
     }
   };
 
+  const switchInputValue = (key: string, val: string) => {
+    switch (key) {
+      case 'location':
+        setSearchInfo({ ...searchInfo, location: val });
+        break;
+      case 'modal':
+        setSearchInfo({ ...searchInfo, modal: val });
+        break;
+      case 'title':
+        setSearchInfo({ ...searchInfo, title: val });
+        break;
+      case 'type':
+        setSearchInfo({ ...searchInfo, type: val });
+        break;
+      default:
+    }
+  };
+
+  const getSearchRes = () => {
+    setLoading(true);
+    searchCameras({
+      query: {
+        condition: searchInfo,
+        size: paginationData?.pageSize,
+        index: paginationData?.current,
+        sort: sorterOrder,
+      },
+    }).then((res) => {
+      setLoading(false);
+      setCameraList(res.data.records);
+    }).catch((err) => {});
+  };
+
   return (
     <>
+      <div className={cx('header')}>
+        <PageHeader
+          onBack={() => { history.goBack(); }}
+          className={cx('page-header')}
+          title="设备列表"
+        />
+        <div className={cx('search-part')}>
+          {Object.keys(searchInfo).map((item, index) => {
+            if (item === 'brand') {
+              return (
+                <Input
+                  value={searchInfo[`${item}`]}
+                  disabled
+                  className={cx(`search-${item}`)}
+                  key={index}
+                />
+              );
+            }
+            return (
+              <Input
+                placeholder={SearchInfoMap[item]}
+                value={searchInfo[`${item}`]}
+                className={cx(`search-${item}`)}
+                onChange={(e) => switchInputValue(item, e.target.value)}
+                key={index}
+              />
+            );
+          })}
+        </div>
+      </div>
       <Modal
         title="确认删除"
         visible={delConfirmFlag}
@@ -205,46 +288,45 @@ const CameraList: React.FC = () => {
         {chooseIndex.sort((a, b) => Number(a) - Number(b)).join(',')}
         的设备吗？
       </Modal>
-      <Modal
-        title="条件查询"
-        visible={searchShowFlag}
-        onCancel={() => setSearchShowFlag(false)}
-      >
-        1
-      </Modal>
       <Spin spinning={pageLoading} indicator={loadingIcon()}>
         <div className={cx('buttons')}>
-          <div>
+          <div className={cx('btns')}>
             <Button
+              className={cx('search-btn')}
               type="primary"
-              onClick={() => {
-                history.push(routerPath.CameraAdd, brandName);
-              }}
+              icon={<SearchOutlined />}
+              onClick={getSearchRes}
             >
-              新增
+              查询
             </Button>
             <Button
               type="default"
-              danger
-              className={cx('del')}
-              disabled={!chooseArr.length}
-              onClick={deleteItems}
+              icon={<DeleteFilled />}
+              onClick={() => { setSearchInfo({ ...initSearchInfo, brand: brandName }); }}
             >
-              删除
+              清空
             </Button>
           </div>
           <Button
             type="primary"
-            icon={<SearchOutlined />}
             onClick={() => {
-              setSearchShowFlag(true);
+              history.push(routerPath.CameraAdd, brandName);
             }}
           >
-            查询
+            新增
+          </Button>
+          <Button
+            type="default"
+            danger
+            className={cx('del')}
+            disabled={!chooseArr.length}
+            onClick={deleteItems}
+          >
+            删除
           </Button>
         </div>
         <Table
-          scroll={{ y: 485 }}
+          scroll={{ y: 433 }}
           columns={columns}
           dataSource={cameraList}
           rowKey="id"
