@@ -60,8 +60,6 @@ app.use((req, res) => {
             if (responseFilePath.indexOf('.json') >= 0) {
                 const mockJsonData = JSON.parse(fs.readFileSync(responseFilePath, 'utf-8'));
                 if (path === '/camera/search') {
-                    console.log(mockJsonData)
-                    console.log(req.body.query)
                     if (mockJsonData.code) {
                         const index = req.body.query.index;
                         const size = req.body.query.size;

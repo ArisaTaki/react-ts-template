@@ -1,7 +1,7 @@
 import React, { ChangeEventHandler, useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import {
-  Button, Input, Modal, PageHeader, Spin, Table,
+  Button, Input, Modal, PageHeader, Spin, Table, Tag,
 } from 'antd';
 import { DeleteFilled, LoadingOutlined, SearchOutlined } from '@ant-design/icons';
 import { ColumnsType } from 'antd/es/table';
@@ -33,6 +33,29 @@ const SearchInfoMap: Record<string, string> = {
   type: '镜头分类',
 };
 
+const SearchTagsStyles: Record<string, { color: string, close: boolean }> = {
+  brand: {
+    color: 'cyan',
+    close: false,
+  },
+  location: {
+    color: 'orange',
+    close: true,
+  },
+  modal: {
+    color: 'green',
+    close: true,
+  },
+  title: {
+    color: 'blue',
+    close: true,
+  },
+  type: {
+    color: 'purple',
+    close: true,
+  },
+};
+
 const initSearchInfo = {
   brand: '',
   type: '',
@@ -50,6 +73,8 @@ const CameraList: React.FC = () => {
   const [paginationData, setPaginationData] = useState<PaginationProps>();
   const [sorterOrder, setSortOrder] = useState<string | undefined>();
   const [searchInfo, setSearchInfo] = useState<SearchCondition>(initSearchInfo);
+  const [tagList, setTagList] = useState<SearchCondition>(initSearchInfo);
+  const [searchPartFlag, setSearchPartFlag] = useState(false);
   // bad code
   const [brandName] = useState<string>(history.location.state as string);
 
@@ -73,6 +98,7 @@ const CameraList: React.FC = () => {
       moveToSystemError404Page(true);
     } else {
       setSearchInfo({ ...searchInfo, brand: brandName });
+      setTagList({ ...tagList, brand: brandName });
       setLoading(true);
       getCameraListMethod();
     }
@@ -231,6 +257,10 @@ const CameraList: React.FC = () => {
     }
   };
 
+  const openSearchPart = () => {
+    setSearchPartFlag(true);
+  };
+
   const getSearchRes = () => {
     setLoading(true);
     searchCameras({
@@ -242,9 +272,30 @@ const CameraList: React.FC = () => {
       },
     }).then((res) => {
       setLoading(false);
+      setTagList(searchInfo);
+      setSearchPartFlag(false);
       setCameraList(res.data.records);
     }).catch((err) => {});
   };
+
+  const renderSearchPart = () => (
+    <div className={cx('search-part')}>
+      {Object.keys(searchInfo).map((item, index) => {
+        if (item === 'brand') {
+          return;
+        }
+        return (
+          <Input
+            placeholder={SearchInfoMap[item]}
+            value={searchInfo[`${item}`]}
+            className={cx(`search-${item}`)}
+            onChange={(e) => switchInputValue(item, e.target.value)}
+            key={index}
+          />
+        );
+      })}
+    </div>
+  );
 
   return (
     <>
@@ -254,23 +305,36 @@ const CameraList: React.FC = () => {
           className={cx('page-header')}
           title="设备列表"
         />
-        <div className={cx('search-part')}>
-          {Object.keys(searchInfo).map((item, index) => {
-            if (item === 'brand') {
-              return;
+        <div className={cx('tags')}>
+          {Object.keys(tagList).map((item, index) => {
+            if (tagList[item]) {
+              return (
+                <Tag
+                  className={cx(SearchTagsStyles[item].color)}
+                  key={index}
+                  color={SearchTagsStyles[item].color}
+                  closable={SearchTagsStyles[item].close}
+                  onClose={() => { switchInputValue(item, ''); }}
+                >
+                  {searchInfo[item]}
+                </Tag>
+              );
             }
-            return (
-              <Input
-                placeholder={SearchInfoMap[item]}
-                value={searchInfo[`${item}`]}
-                className={cx(`search-${item}`)}
-                onChange={(e) => switchInputValue(item, e.target.value)}
-                key={index}
-              />
-            );
+            return null;
           })}
         </div>
       </div>
+      <Modal
+        title="筛选条件"
+        visible={searchPartFlag}
+        onCancel={() => {
+          setSearchPartFlag(false);
+        }}
+        onOk={getSearchRes}
+        maskClosable={false}
+      >
+        {renderSearchPart()}
+      </Modal>
       <Modal
         title="确认删除"
         visible={delConfirmFlag}
@@ -288,16 +352,21 @@ const CameraList: React.FC = () => {
               className={cx('search-btn')}
               type="primary"
               icon={<SearchOutlined />}
-              onClick={getSearchRes}
+              onClick={openSearchPart}
             >
               查询
             </Button>
             <Button
               type="default"
               icon={<DeleteFilled />}
-              onClick={() => { setSearchInfo({ ...initSearchInfo, brand: brandName }); }}
+              onClick={() => {
+                setSearchInfo({ ...initSearchInfo, brand: brandName });
+                setTagList({ ...initSearchInfo, brand: brandName });
+                setChooseArr([]);
+                setChooseIndex([]);
+              }}
             >
-              清空
+              重置
             </Button>
           </div>
           <Button

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import { useParams } from 'react-router-dom';
 import { LoadingOutlined } from '@ant-design/icons';
-import { Spin } from 'antd';
+import { Spin, Switch } from 'antd';
 import styles from './styles.module.scss';
 import { ServicesApi } from '@/services/services-api';
 import EquipmentAddOrEdit from '@/pages/EquipmentAdd/components/EquipmentAddOrEdit';
@@ -34,7 +34,6 @@ const EquipmentEdit: React.FC = () => {
   }, []);
 
   const loadingIcon = () => <LoadingOutlined style={{ fontSize: 24 }} spin />;
-
   return (
     <Spin spinning={pageLoading} indicator={loadingIcon()}>
       {brandInfo ? (

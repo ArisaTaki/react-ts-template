@@ -21,37 +21,46 @@
   margin-bottom: 10px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   .page-header {
     padding: 0;
     margin-top: -4px;
   }
-  .search-part {
+}
 
-    margin-bottom: 10px;
+.search-part {
 
-    .search-brand {
-      width: 80px;
-      margin-right: 10px;
-    }
+  margin-bottom: 10px;
 
-    .search-location {
-      width: 160px;
-      margin-right: 10px;
-    }
+  .search-brand {
+    width: 80px;
+    margin-right: 10px;
+  }
 
-    .search-modal {
-      width: 100px;
-    }
+  .search-location {
+    width: 160px;
+    margin-right: 10px;
+  }
 
-    .search-type {
-      width: 120px;
-      margin-right: 10px;
-    }
+  .search-modal {
+    width: 100px;
+    margin-top: 10px;
+  }
 
-    .search-title {
-      width: 120px;
-      margin-right: 10px;
+  .search-type {
+    width: 120px;
+    margin-right: 10px;
+  }
 
-    }
+  .search-title {
+    width: 120px;
+    margin-right: 10px;
+  }
+}
+
+.tags {
+  span {
+    margin-right: 0px;
+    margin-left: 8px;
   }
 }
