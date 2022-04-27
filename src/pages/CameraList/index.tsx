@@ -33,7 +33,7 @@ const SearchInfoMap: Record<string, string> = {
   type: '镜头分类',
 };
 
-const SearchTagsStyles: Record<string, { color: string, close: boolean }> = {
+const SearchTagsStyles: Record<string, { color: string, close: boolean, title?: string }> = {
   brand: {
     color: 'cyan',
     close: false,
@@ -41,18 +41,22 @@ const SearchTagsStyles: Record<string, { color: string, close: boolean }> = {
   location: {
     color: 'orange',
     close: true,
+    title: '定位',
   },
   modal: {
     color: 'green',
     close: true,
+    title: '型号',
   },
   title: {
     color: 'blue',
     close: true,
+    title: '标题',
   },
   type: {
     color: 'purple',
     close: true,
+    title: '种类',
   },
 };
 
@@ -336,7 +340,7 @@ const CameraList: React.FC = () => {
                   getSearchRes(true);
                 }}
               >
-                {tagList[item]}
+                {`${SearchTagsStyles[item].title ? `${SearchTagsStyles[item].title}：` : ''}${tagList[item]}`}
               </Tag>
             ))}
           </div>
