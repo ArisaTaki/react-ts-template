@@ -59,6 +59,9 @@
 }
 
 .tags {
+  &.disabled {
+    pointer-events: none;
+  }
   span {
     margin-right: 0px;
     margin-left: 8px;

@@ -94,6 +94,7 @@ const CameraList: React.FC = () => {
   };
 
   useEffect(() => {
+    // TODO 用户从其他页面返回到此处是否需要保留上一次检索的结果？
     if (!history.location.state) {
       moveToSystemError404Page(true);
     } else {
@@ -273,8 +274,9 @@ const CameraList: React.FC = () => {
     setSearchPartFlag(true);
   };
 
-  const getSearchRes = () => {
+  const getSearchRes = (operateCloseFlag = false) => {
     setLoading(true);
+    setSearchPartFlag(false);
     searchCameras({
       query: {
         condition: searchInfo,
@@ -283,9 +285,10 @@ const CameraList: React.FC = () => {
         sort: sorterOrder,
       },
     }).then((res) => {
+      if (!operateCloseFlag) {
+        setTagList(searchInfo);
+      }
       setLoading(false);
-      setTagList(searchInfo);
-      setSearchPartFlag(false);
       setCameraList(res.data.records);
     }).catch((err) => {});
   };
@@ -317,7 +320,7 @@ const CameraList: React.FC = () => {
           className={cx('page-header')}
           title="设备列表"
         />
-        <div className={cx('tags')}>
+        <div className={cx('tags', { disabled: pageLoading })}>
           {Object.keys(tagList).map((item, index) => (
             <Tag
               visible={!!tagList[item]}
@@ -327,6 +330,7 @@ const CameraList: React.FC = () => {
               closable={SearchTagsStyles[item].close}
               onClose={() => {
                 switchInputValue(item, '', true);
+                getSearchRes(true);
               }}
             >
               {tagList[item]}
@@ -340,7 +344,7 @@ const CameraList: React.FC = () => {
         onCancel={() => {
           setSearchPartFlag(false);
         }}
-        onOk={getSearchRes}
+        onOk={() => { getSearchRes(); }}
         maskClosable={false}
       >
         {renderSearchPart()}
