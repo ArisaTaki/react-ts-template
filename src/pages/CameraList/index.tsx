@@ -328,21 +328,26 @@ const CameraList: React.FC = () => {
             title="设备列表"
           />
           <div className={cx('tags')}>
-            {Object.keys(tagList).map((item, index) => (
-              <Tag
-                visible={!!tagList[item]}
-                className={cx(SearchTagsStyles[item].color)}
-                key={index}
-                color={SearchTagsStyles[item].color}
-                closable={SearchTagsStyles[item].close}
-                onClose={() => {
-                  switchInputValue(item, '', true);
-                  getSearchRes(true);
-                }}
-              >
-                {`${SearchTagsStyles[item].title ? `${SearchTagsStyles[item].title}：` : ''}${tagList[item]}`}
-              </Tag>
-            ))}
+            {Object.keys(tagList).map((item, index) => {
+              const overFiveChara = tagList[item].length > 5;
+              return (
+                <Tag
+                  visible={!!tagList[item]}
+                  className={cx(SearchTagsStyles[item].color)}
+                  key={index}
+                  color={SearchTagsStyles[item].color}
+                  closable={SearchTagsStyles[item].close}
+                  onClose={() => {
+                    switchInputValue(item, '', true);
+                    getSearchRes(true);
+                  }}
+                >
+                  {overFiveChara
+                    ? `${SearchTagsStyles[item].title ? `${SearchTagsStyles[item].title}：` : ''}${tagList[item].slice(0, 5)}...`
+                    : `${SearchTagsStyles[item].title ? `${SearchTagsStyles[item].title}：` : ''}${tagList[item]}`}
+                </Tag>
+              );
+            })}
           </div>
         </div>
         <Modal
