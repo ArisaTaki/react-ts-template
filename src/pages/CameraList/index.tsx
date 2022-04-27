@@ -239,19 +239,31 @@ const CameraList: React.FC = () => {
     }
   };
 
-  const switchInputValue = (key: string, val: string) => {
+  const switchInputValue = (key: string, val: string, operateFromTag = false) => {
     switch (key) {
       case 'location':
         setSearchInfo({ ...searchInfo, location: val });
+        if (operateFromTag) {
+          setTagList({ ...tagList, location: val });
+        }
         break;
       case 'modal':
         setSearchInfo({ ...searchInfo, modal: val });
+        if (operateFromTag) {
+          setTagList({ ...tagList, modal: val });
+        }
         break;
       case 'title':
         setSearchInfo({ ...searchInfo, title: val });
+        if (operateFromTag) {
+          setTagList({ ...tagList, title: val });
+        }
         break;
       case 'type':
         setSearchInfo({ ...searchInfo, type: val });
+        if (operateFromTag) {
+          setTagList({ ...tagList, type: val });
+        }
         break;
       default:
     }
@@ -306,22 +318,20 @@ const CameraList: React.FC = () => {
           title="设备列表"
         />
         <div className={cx('tags')}>
-          {Object.keys(tagList).map((item, index) => {
-            if (tagList[item]) {
-              return (
-                <Tag
-                  className={cx(SearchTagsStyles[item].color)}
-                  key={index}
-                  color={SearchTagsStyles[item].color}
-                  closable={SearchTagsStyles[item].close}
-                  onClose={() => { switchInputValue(item, ''); }}
-                >
-                  {searchInfo[item]}
-                </Tag>
-              );
-            }
-            return null;
-          })}
+          {Object.keys(tagList).map((item, index) => (
+            <Tag
+              visible={!!tagList[item]}
+              className={cx(SearchTagsStyles[item].color)}
+              key={index}
+              color={SearchTagsStyles[item].color}
+              closable={SearchTagsStyles[item].close}
+              onClose={() => {
+                switchInputValue(item, '', true);
+              }}
+            >
+              {tagList[item]}
+            </Tag>
+          ))}
         </div>
       </div>
       <Modal

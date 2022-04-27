@@ -22,7 +22,6 @@ const shouldNotMatchDynamicRoutes = ['/brand/add', '/camera-list/del', '/camera/
 
 // 排序模拟
 const sortMock = (arr, sort) => {
-    console.log(sort)
     if (!sort) {
         return arr
     } else if (sort === 'ascend') {
