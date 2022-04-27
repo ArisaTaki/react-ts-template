@@ -83,6 +83,8 @@ const CameraList: React.FC = () => {
       .then((res) => {
         setLoading(false);
         setCameraList(res.data.records);
+        setSearchInfo({ ...initSearchInfo, brand: brandName });
+        setTagList({ ...initSearchInfo, brand: brandName });
         setPaginationData({
           pageSize: res.data.size,
           current: res.data.index,
@@ -314,52 +316,52 @@ const CameraList: React.FC = () => {
 
   return (
     <>
-      <div className={cx('header')}>
-        <PageHeader
-          onBack={() => { history.goBack(); }}
-          className={cx('page-header')}
-          title="设备列表"
-        />
-        <div className={cx('tags', { disabled: pageLoading })}>
-          {Object.keys(tagList).map((item, index) => (
-            <Tag
-              visible={!!tagList[item]}
-              className={cx(SearchTagsStyles[item].color)}
-              key={index}
-              color={SearchTagsStyles[item].color}
-              closable={SearchTagsStyles[item].close}
-              onClose={() => {
-                switchInputValue(item, '', true);
-                getSearchRes(true);
-              }}
-            >
-              {tagList[item]}
-            </Tag>
-          ))}
-        </div>
-      </div>
-      <Modal
-        title="筛选条件"
-        visible={searchPartFlag}
-        onCancel={() => {
-          setSearchPartFlag(false);
-        }}
-        onOk={() => { getSearchRes(); }}
-        maskClosable={false}
-      >
-        {renderSearchPart()}
-      </Modal>
-      <Modal
-        title="确认删除"
-        visible={delConfirmFlag}
-        onCancel={() => setDelConfirmFlag(false)}
-        onOk={delEventOk}
-      >
-        确定删除编号为
-        {chooseIndex.sort((a, b) => Number(a) - Number(b)).join(',')}
-        的设备吗？
-      </Modal>
       <Spin spinning={pageLoading} indicator={loadingIcon()}>
+        <div className={cx('header')}>
+          <PageHeader
+            onBack={() => { history.goBack(); }}
+            className={cx('page-header')}
+            title="设备列表"
+          />
+          <div className={cx('tags')}>
+            {Object.keys(tagList).map((item, index) => (
+              <Tag
+                visible={!!tagList[item]}
+                className={cx(SearchTagsStyles[item].color)}
+                key={index}
+                color={SearchTagsStyles[item].color}
+                closable={SearchTagsStyles[item].close}
+                onClose={() => {
+                  switchInputValue(item, '', true);
+                  getSearchRes(true);
+                }}
+              >
+                {tagList[item]}
+              </Tag>
+            ))}
+          </div>
+        </div>
+        <Modal
+          title="筛选条件"
+          visible={searchPartFlag}
+          onCancel={() => {
+            setSearchPartFlag(false);
+          }}
+          onOk={() => { getSearchRes(); }}
+          maskClosable={false}
+        >
+          {renderSearchPart()}
+        </Modal>
+        <Modal
+          title="确认删除"
+          visible={delConfirmFlag}
+          onCancel={() => setDelConfirmFlag(false)}
+          onOk={delEventOk}
+        >
+          确定删除编号为
+          {chooseIndex.sort((a, b) => Number(a) - Number(b)).join(',')}
+          的设备吗？
+        </Modal>
         <div className={cx('buttons')}>
           <div className={cx('btns')}>
             <Button
