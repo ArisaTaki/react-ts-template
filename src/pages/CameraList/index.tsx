@@ -1,4 +1,6 @@
-import React, { ChangeEventHandler, useEffect, useState } from 'react';
+import React, {
+  ChangeEventHandler, useEffect, useRef, useState,
+} from 'react';
 import classNames from 'classnames/bind';
 import {
   Button, Input, Modal, PageHeader, Spin, Table, Tag,
@@ -81,6 +83,7 @@ const CameraList: React.FC = () => {
   const [searchPartFlag, setSearchPartFlag] = useState(false);
   // bad code
   const [brandName] = useState<string>(history.location.state as string);
+  const sortTitleRef = useRef<string>('点击升序');
 
   const getCameraListMethod = () => {
     searchCameras({ query: { condition: { brand: brandName }, index: 1, size: 10 } })
@@ -236,6 +239,16 @@ const CameraList: React.FC = () => {
     sort:SorterResult<CameraInfo>,
     pagination:TablePaginationConfig) => {
     if (action === 'sort') {
+      switch (sort.order) {
+        case 'ascend':
+          sortTitleRef.current = '点击降序';
+          break;
+        case 'descend':
+          sortTitleRef.current = '取消排序';
+          break;
+        default:
+          sortTitleRef.current = '点击升序';
+      }
       setLoading(true);
       setSortOrder(sort.order ?? undefined);
       sorterChangeEvent(sort.order ?? undefined);
@@ -422,7 +435,7 @@ const CameraList: React.FC = () => {
             sorter = sorter as SorterResult<CameraInfo>;
             switchActionChange(extra.action, sorter, pagination);
           }}
-          showSorterTooltip={false}
+          showSorterTooltip={{ title: sortTitleRef.current }}
           pagination={{
             ...paginationProps,
           }}
