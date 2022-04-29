@@ -331,6 +331,17 @@ const CameraList: React.FC = () => {
     </div>
   );
 
+  const resetAllData = () => {
+    setLoading(true);
+    setSearchInfo({ ...initSearchInfo, brand: brandName });
+    setTagList({ ...initSearchInfo, brand: brandName });
+    setChooseArr([]);
+    setChooseIndex([]);
+    setCameraList([]);
+    setPaginationData({ ...paginationData, current: 1, pageSize: 10 });
+    getCameraListMethod();
+  };
+
   return (
     <>
       <Spin spinning={pageLoading} indicator={loadingIcon()}>
@@ -397,12 +408,7 @@ const CameraList: React.FC = () => {
             <Button
               type="default"
               icon={<DeleteFilled />}
-              onClick={() => {
-                setSearchInfo({ ...initSearchInfo, brand: brandName });
-                setTagList({ ...initSearchInfo, brand: brandName });
-                setChooseArr([]);
-                setChooseIndex([]);
-              }}
+              onClick={resetAllData}
             >
               重置
             </Button>
