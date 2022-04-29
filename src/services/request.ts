@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig } from 'axios';
-import { mockApiPath, onlineApiPath } from '@/constant/constants';
+import { mockApiPath, onlineApiPath, textOnlineMockPath } from '@/constant/constants';
 import { getToken, getUser } from '@/utils/storageUtils';
 import { moveToSystemError403Page } from '@/helpers/history';
 
@@ -7,7 +7,7 @@ if (process.env.NODE_ENV === 'development') {
   axios.defaults.baseURL = mockApiPath;
 }
 if (process.env.NODE_ENV === 'production') {
-  axios.defaults.baseURL = onlineApiPath;
+  axios.defaults.baseURL = textOnlineMockPath;
 }
 const instance = axios.create({ timeout: 10 * 1000 });
 instance.defaults.headers.get.Pragma = 'no-cache';

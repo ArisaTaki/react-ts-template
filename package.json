@@ -2,6 +2,7 @@
   "name": "equipment-manager-app",
   "version": "0.1.0",
   "private": true,
+  "homepage": "http://47.109.33.220/",
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
     "@reduxjs/toolkit": "^1.8.0",
@@ -60,7 +61,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "REACT_APP_USE_IP=true concurrently \"react-app-rewired start\" \"node scripts/data-mock-server.js\"",
+    "start": "REACT_APP_USE_IP=true concurrently \"react-app-rewired start\"",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject"
