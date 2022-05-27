@@ -21,7 +21,6 @@ const Login: React.FC = () => {
   const handleToHomePage = async () => {
     try {
       const { userName, passWord } = form.getFieldsValue();
-      const checkResult = await formRef.current?.validateFields();
       login({ userName, passWord }).then((res) => {
         const { data } = res;
         saveUser(data);

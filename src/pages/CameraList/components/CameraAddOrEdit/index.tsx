@@ -7,7 +7,6 @@ import styles from './style.module.scss';
 import history from '@/utils/getHistory';
 import { CameraInfo } from '@/services/entities';
 import { ServicesApi } from '@/services/services-api';
-import routerPath from '@/router/router-path';
 
 const cx = classNames.bind(styles);
 

@@ -1,6 +1,4 @@
-import React, {
-  ChangeEventHandler, useEffect, useRef, useState,
-} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import classNames from 'classnames/bind';
 import {
   Button, Input, Modal, PageHeader, Spin, Table, Tag,
